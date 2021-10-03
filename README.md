@@ -1,10 +1,10 @@
 # Playground
 
-# Fitness
+## Fitness
 
-# Play
+## Play
 
-# Virtual Try On
+## Virtual Try On
 
 
 # This project modifies from [Sport With AI](https://github.com/Furkan-Gulsen/Sport-With-AI)
