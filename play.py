@@ -7,6 +7,7 @@ from utils import *
 import mediapipe as mp
 from body_part_angle import BodyPartAngle
 from game.game import *
+from timer import *
 import random
 
 ## setup agrparse
@@ -32,11 +33,14 @@ if args["video_source"] is not None:
     cap = cv2.VideoCapture(args["video_source"])
 else:
     cap = cv2.VideoCapture(0)  # webcam
-w = 800
-h = 480
+# w = 800
+# h = 480
+w = 1600
+h = 960
 cap.set(3, w)  # width
 cap.set(4, h)  # height
 #設置遊戲初始環境
+start_time = time.time()
 env_list = game_start(args["game_type"])
 counter = 0 # movement of exercise
 ## setup mediapipe
@@ -63,6 +67,7 @@ with mp_pose.Pose(min_detection_confidence=0.8,
         frame = game_plot(args["game_type"],frame,env_coordinate)
         #================================================================
         try:
+            
             landmarks = results.pose_landmarks.landmark
             total_status = []
             for i,env in enumerate(env_coordinate):
@@ -73,7 +78,7 @@ with mp_pose.Pose(min_detection_confidence=0.8,
             total_status = []
             pass
 
-        score_table(args["game_type"], counter, total_status)
+        score_table(args["game_type"], counter, [str(x)[0] for x in total_status],timer(start_time))
 
         ## render detections (for landmarks)
         mp_drawing.draw_landmarks(
