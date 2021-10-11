@@ -56,8 +56,9 @@ def detection_body_parts(landmarks):
 
     return body_parts
 
+def score_table(exercise, counter, status , hint, time='00:00:00'):
+    
 
-def score_table(exercise, counter, status,time='00:00:00'):
     #先讀一張圖當作背景
     score_table = cv2.imread("./images/score_table.png")
     #第一行請cv2在這張圖上寫上運動名字
@@ -70,9 +71,18 @@ def score_table(exercise, counter, status,time='00:00:00'):
     #第三行請cv2在這張圖上寫上目前的狀態
     cv2.putText(score_table, "Status : " + str(status), (10, 135),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (182, 158, 128), 2, cv2.LINE_AA)
-    cv2.putText(score_table, "Time : " + str(time), (10, 170),
+
+
+    #hint
+    cv2.putText(score_table, "Hint : " + str(hint), (10, 205),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (182, 158, 128), 2, cv2.LINE_AA)
     cv2.imshow("Score Table", score_table)
+
+
+
+#     cv2.putText(score_table, "Time : " + str(time), (10, 170),
+#                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (182, 158, 128), 2, cv2.LINE_AA)
+#     cv2.imshow("Score Table", score_table)
 
 def timer(start_time):
     time_diff = time.time()-start_time
@@ -80,3 +90,4 @@ def timer(start_time):
     MIN = str(int(time_diff % 3600 // 60 // 10 )) + str(int(time_diff % 3600 // 60 % 10))
     SEC = str(int(time_diff % 60 // 10 )) +str(int(time_diff % 10))
     return f'{HR}:{MIN}:{SEC}'
+
