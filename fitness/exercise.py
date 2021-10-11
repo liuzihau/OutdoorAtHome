@@ -301,6 +301,59 @@ class TypeOfExercise(BodyPartAngle):
         return [counter, status, hint]
 
     # 二頭彎舉 Biceps Curls(正面)(手臂)
+    def biceps_curls(self, counter, status):
+        left_arm_angle = self.angle_of_the_left_arm()
+        right_arm_angle = self.angle_of_the_right_arm()
+        print(left_arm_angle,right_arm_angle)
+
+        # 兩手都達成才加一分
+        if status:
+            if left_arm_angle < 70 and right_arm_angle < 70:
+                counter += 1
+                status = False
+            elif left_arm_angle < 70 or right_arm_angle < 70:
+                counter += 0.5
+                status = False
+        else:
+            if left_arm_angle >= 160 and right_arm_angle >= 160:
+                status = True
+
+        if hint:
+            if avg_arm_angle > 150: 
+                if avg_shoulder_angle < 160:
+                    hint= "Try to press up your dumbbells closer"            
+            elif avg_arm_angle < 160:
+                hint= "Try to press up with straight arms"            
+                 
+        return [counter, status, hint]
+
+         
+    #啞鈴俯身划船 Bent Over Row(側面)(背)
+    def bent_over_row(self, counter, status, hint):
+        left_arm_angle = self.angle_of_the_left_arm()
+        right_arm_angle = self.angle_of_the_right_arm()
+        left_shoulder = detection_body_part(self.landmarks, "LEFT_SHOULDER")
+        right_shoulder = detection_body_part(self.landmarks, "RIGHT_SHOULDER")       
+
+        if status:
+            if left_arm_angle < 90 or right_arm_angle < 90:
+                counter += 1
+                status = False
+        else:
+            if left_arm_angle > 160 or right_arm_angle > 160:
+                status = True
+
+        if hint:
+            if right_arm_angle < 90: 
+                if right_shoulder[1] > left_shoulder[1]:
+                    hint= "Try to press up your dumbbells back and across to contract your lats and abduction the arm"            
+            elif left_arm_angle < 90: 
+                if left_shoulder[1] > right_shoulder[1]:
+                    hint= "Try to press up your dumbbells back and across to contract your lats and abduction the arm"
+
+        return [counter, status, hint]
+
+    # 二頭彎舉 Biceps Curls(正面)(手臂)
     def biceps_curls(self, counter, status ,hint):
         left_arm_angle = self.angle_of_the_left_arm()
         right_arm_angle = self.angle_of_the_right_arm()
@@ -331,6 +384,7 @@ class TypeOfExercise(BodyPartAngle):
                 hint= "Chest up and face forward"
 
         return [counter, status, hint]
+
 
 
     def calculate_exercise(self, exercise_type, counter, status, hint):
@@ -371,7 +425,9 @@ class TypeOfExercise(BodyPartAngle):
             counter, status, hint = TypeOfExercise(self.landmarks).bent_over_row(
                 counter, status, hint)
         elif exercise_type == "biceps_curls":
+
             counter, status ,hint= TypeOfExercise(self.landmarks).biceps_curls(
                 counter, status, hint)
+
 
         return [counter, status ,hint]

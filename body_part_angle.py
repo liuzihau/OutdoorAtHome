@@ -52,6 +52,23 @@ class BodyPartAngle:
         hip_avg = [(r_hip[0] + l_hip[0]) / 2, (r_hip[1] + l_hip[1]) / 2]
 
         return abs(180 - calculate_angle(mouth_avg, shoulder_avg, hip_avg))
+    
+    #頸部向前彎曲角度
+    def angle_of_the_neck_forward(self):
+        r_shoulder = detection_body_part(self.landmarks, "RIGHT_SHOULDER")
+        l_shoulder = detection_body_part(self.landmarks, "LEFT_SHOULDER")
+        r_mouth = detection_body_part(self.landmarks, "MOUTH_RIGHT")
+        l_mouth = detection_body_part(self.landmarks, "MOUTH_LEFT")
+        r_hip = detection_body_part(self.landmarks, "RIGHT_HIP")
+        l_hip = detection_body_part(self.landmarks, "LEFT_HIP")
+
+        shoulder_avg = [(r_shoulder[0] + l_shoulder[0]) / 2,
+                        (r_shoulder[1] + l_shoulder[1]) / 2]
+        mouth_avg = [(r_mouth[0] + l_mouth[0]) / 2,
+                     (r_mouth[1] + l_mouth[1]) / 2]
+        hip_avg = [(r_hip[0] + l_hip[0]) / 2, (r_hip[1] + l_hip[1]) / 2]
+
+        return calculate_angle(mouth_avg, shoulder_avg, hip_avg)
 
     def angle_of_the_abdomen(self):
         # calculate angle of the avg shoulder
@@ -71,3 +88,37 @@ class BodyPartAngle:
         knee_avg = [(r_knee[0] + l_knee[0]) / 2, (r_knee[1] + l_knee[1]) / 2]
 
         return calculate_angle(shoulder_avg, hip_avg, knee_avg)
+
+    #小腿與地面的角度
+    def angle_of_the_calf_horizon(self):
+        
+        # calculate angle of the avg knee
+        r_knee = detection_body_part(self.landmarks, "RIGHT_KNEE")
+        l_knee = detection_body_part(self.landmarks, "LEFT_KNEE")
+        knee_avg = [(r_knee[0] + l_knee[0]) / 2, (r_knee[1] + l_knee[1]) / 2]
+
+        # calculate angle of the avg ankle
+        l_ankle = detection_body_part(self.landmarks, "LEFT_ANKLE")
+        r_ankle = detection_body_part(self.landmarks, "RIGHT_ANKLE")
+        ankle_avg = [(r_ankle[0] + l_ankle[0]) / 2, (r_ankle[1] + l_ankle[1]) / 2]
+        
+        #腳踝的水平面
+        calf_horizon = [((r_ankle[0] + l_ankle[0]) / 2) + 0.1, (r_ankle[1] + l_ankle[1]) / 2]
+
+        return calculate_angle(knee_avg, ankle_avg, calf_horizon)
+
+    #左腋下角度
+    def angle_of_the_left_shoulder(self):
+        l_hip = detection_body_part(self.landmarks, "LEFT_HIP")
+        l_shoulder = detection_body_part(self.landmarks, "LEFT_SHOULDER")
+        l_elbow = detection_body_part(self.landmarks, "LEFT_ELBOW")
+        
+        return calculate_angle(l_hip, l_shoulder, l_elbow)
+        
+    #右腋下角度
+    def angle_of_the_right_shoulder(self):
+        r_hip = detection_body_part(self.landmarks, "RIGHT_HIP")
+        r_shoulder = detection_body_part(self.landmarks, "RIGHT_SHOULDER")
+        r_elbow = detection_body_part(self.landmarks, "RIGHT_ELBOW")
+        
+        return calculate_angle(r_hip, r_shoulder, r_elbow)
