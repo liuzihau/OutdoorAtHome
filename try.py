@@ -31,8 +31,8 @@ if args["video_source"] is not None:
     cap = cv2.VideoCapture(args["video_source"])
 else:
     cap = cv2.VideoCapture(0)  # webcam
-w = 800
-h = 480
+w = 1600
+h = 960
 cap.set(3, w)  # width
 cap.set(4, h)  # height
 
@@ -42,6 +42,7 @@ with mp_pose.Pose(min_detection_confidence=0.8,
 
     counter = 0  # movement of exercise
     status = True  # state of move
+    hint = "Ready!"
     while cap.isOpened():
         ret, frame = cap.read()
         # result_screen = np.zeros((250, 400, 3), np.uint8)
@@ -58,12 +59,12 @@ with mp_pose.Pose(min_detection_confidence=0.8,
 
         try:
             landmarks = results.pose_landmarks.landmark
-            counter, status = TypeOfExercise(landmarks).calculate_exercise(
-                args["exercise_type"], counter, status)
+            counter, status, hint = TypeOfExercise(landmarks).calculate_exercise(
+                args["exercise_type"], counter, status, hint)
         except:
             pass
 
-        score_table(args["exercise_type"], counter, status)
+        score_table(args["exercise_type"], counter, status, hint)
 
         ## render detections (for landmarks)
         mp_drawing.draw_landmarks(
