@@ -37,6 +37,7 @@ def calculate_angle(a, b, c):
 #傳進現在的landmarks資料 還有感興趣的landmark資料的名字
 def detection_body_part(landmarks, body_part_name):
     #返回該landmark的x y 還有可見度
+    
     return [
         landmarks[mp_pose.PoseLandmark[body_part_name].value].x,
         landmarks[mp_pose.PoseLandmark[body_part_name].value].y,
@@ -56,7 +57,7 @@ def detection_body_parts(landmarks):
 
     return body_parts
 
-def score_table(exercise, counter, status , hint, time='00:00:00'):
+def score_table(exercise, counter, status, hint, time='00:00:00'):
     
 
     #先讀一張圖當作背景
@@ -80,14 +81,15 @@ def score_table(exercise, counter, status , hint, time='00:00:00'):
 
 
 
-#     cv2.putText(score_table, "Time : " + str(time), (10, 170),
-#                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (182, 158, 128), 2, cv2.LINE_AA)
-#     cv2.imshow("Score Table", score_table)
+    cv2.putText(score_table, "Time : " + str(time), (10, 170),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (182, 158, 128), 2, cv2.LINE_AA)
+    cv2.imshow("Score Table", score_table)
 
 def timer(start_time):
     time_diff = time.time()-start_time
     HR = str(int(time_diff // 3600 // 10 )) + str(int(time_diff // 3600 % 10))
     MIN = str(int(time_diff % 3600 // 60 // 10 )) + str(int(time_diff % 3600 // 60 % 10))
     SEC = str(int(time_diff % 60 // 10 )) +str(int(time_diff % 10))
+    #print( f'{HR}:{MIN}:{SEC}')
     return f'{HR}:{MIN}:{SEC}'
 
