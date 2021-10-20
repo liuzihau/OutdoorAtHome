@@ -1,0 +1,19 @@
+{
+    "workbench.colorCustomizations": {
+
+        "activityBar.background": "#042F55",
+        "titleBar.activeBackground": "#064177",
+        "titleBar.activeForeground": "#F8FCFF",
+        "editor.selectionBackground": "#ebe597"
+    },
+
+
+    // "editor.tokenColorCustomizations":{
+    //     "comments":"#665c5c",
+    //     "keywords":"#9375af",        
+    //     "numbers":"#ce933a",
+    //     "functions": "#6f90a3",
+    //     "strings": "#6fa775",
+    //     "variables": "#c976a6",
+    // }
+}

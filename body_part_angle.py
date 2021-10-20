@@ -53,22 +53,22 @@ class BodyPartAngle:
 
         return abs(180 - calculate_angle(mouth_avg, shoulder_avg, hip_avg))
     
-    #頸部向前彎曲角度
-    def angle_of_the_neck_forward(self):
-        r_shoulder = detection_body_part(self.landmarks, "RIGHT_SHOULDER")
-        l_shoulder = detection_body_part(self.landmarks, "LEFT_SHOULDER")
-        r_mouth = detection_body_part(self.landmarks, "MOUTH_RIGHT")
-        l_mouth = detection_body_part(self.landmarks, "MOUTH_LEFT")
-        r_hip = detection_body_part(self.landmarks, "RIGHT_HIP")
-        l_hip = detection_body_part(self.landmarks, "LEFT_HIP")
+    # #頸部向前彎曲角度
+    # def angle_of_the_neck_forward(self):
+    #     r_shoulder = detection_body_part(self.landmarks, "RIGHT_SHOULDER")
+    #     l_shoulder = detection_body_part(self.landmarks, "LEFT_SHOULDER")
+    #     r_mouth = detection_body_part(self.landmarks, "MOUTH_RIGHT")
+    #     l_mouth = detection_body_part(self.landmarks, "MOUTH_LEFT")
+    #     r_hip = detection_body_part(self.landmarks, "RIGHT_HIP")
+    #     l_hip = detection_body_part(self.landmarks, "LEFT_HIP")
 
-        shoulder_avg = [(r_shoulder[0] + l_shoulder[0]) / 2,
-                        (r_shoulder[1] + l_shoulder[1]) / 2]
-        mouth_avg = [(r_mouth[0] + l_mouth[0]) / 2,
-                     (r_mouth[1] + l_mouth[1]) / 2]
-        hip_avg = [(r_hip[0] + l_hip[0]) / 2, (r_hip[1] + l_hip[1]) / 2]
+    #     shoulder_avg = [(r_shoulder[0] + l_shoulder[0]) / 2,
+    #                     (r_shoulder[1] + l_shoulder[1]) / 2]
+    #     mouth_avg = [(r_mouth[0] + l_mouth[0]) / 2,
+    #                  (r_mouth[1] + l_mouth[1]) / 2]
+    #     hip_avg = [(r_hip[0] + l_hip[0]) / 2, (r_hip[1] + l_hip[1]) / 2]
 
-        return calculate_angle(mouth_avg, shoulder_avg, hip_avg)
+    #     return calculate_angle(mouth_avg, shoulder_avg, hip_avg)
 
     def angle_of_the_abdomen(self):
         # calculate angle of the avg shoulder

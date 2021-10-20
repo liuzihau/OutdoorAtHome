@@ -6,7 +6,10 @@ import argparse
 from utils import *
 import mediapipe as mp
 from body_part_angle import BodyPartAngle
-from fitness.exercise import TypeOfExercise
+from exercise import TypeOfExercise
+from sounds.sound import fitness_sound
+import time
+import pygame
 
 ## setup agrparse
 ap = argparse.ArgumentParser()
@@ -21,6 +24,10 @@ ap.add_argument("-vs",
                 help='Type of activity to do',
                 required=False)
 args = vars(ap.parse_args())
+
+#init music class
+music = fitness_sound()
+#print(music.soundon)
 
 ## drawing body
 mp_drawing = mp.solutions.drawing_utils
@@ -43,11 +50,17 @@ with mp_pose.Pose(min_detection_confidence=0.8,
     counter = 0  # movement of exercise
     status = True  # state of move
     hint = "Ready!"
+    start_time = time.time()
+
     while cap.isOpened():
+                
         ret, frame = cap.read()
+        if not ret:
+            print("no ret")
         # result_screen = np.zeros((250, 400, 3), np.uint8)
 
         frame = cv2.resize(frame, (w, h), interpolation=cv2.INTER_AREA)
+
         ## recolor frame to RGB
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame.flags.writeable = False
@@ -58,14 +71,17 @@ with mp_pose.Pose(min_detection_confidence=0.8,
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 
         try:
-            landmarks = results.pose_landmarks.landmark
-            counter, status, hint = TypeOfExercise(landmarks).calculate_exercise(
-                args["exercise_type"], counter, status, hint)
-        except:
+            landmarks = results.pose_landmarks.landmark            
+            counter, status, hint= TypeOfExercise(landmarks).calculate_exercise(
+                args["exercise_type"], counter, status, hint)            
+            music.play_my_sound(args["exercise_type"],int(timer(start_time)[-2:]))
+            
+            print(int(timer(start_time)[-2:]))
+        except:            
             pass
 
-        score_table(args["exercise_type"], counter, status, hint)
-
+        score_table(args["exercise_type"], counter, status, hint, timer(start_time))
+        
         ## render detections (for landmarks)
         mp_drawing.draw_landmarks(
             frame,
@@ -104,6 +120,7 @@ with mp_pose.Pose(min_detection_confidence=0.8,
             cy = int(h *(landmarks[mp.solutions.pose.PoseLandmark['LEFT_HIP'].value].y+landmarks[mp.solutions.pose.PoseLandmark['RIGHT_HIP'].value].y)/2)
             cv2.putText(frame, str(round(angle.angle_of_the_abdomen())), (cx-20, cy-20),
                             cv2.FONT_HERSHEY_PLAIN, 2, (150, 150, 150), 2)
+            
         except:
             pass
 
