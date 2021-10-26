@@ -4,119 +4,78 @@ This file is originally from "Sports With AI" https://github.com/Furkan-Gulsen/S
 import numpy as np
 from body_part_angle import BodyPartAngle
 from utils import *
+import math
+# import autopy
+import pyautogui
 
 
-class TypeOfExercise(BodyPartAngle):
+class TypeOfControl(BodyPartAngle):
     def __init__(self, landmarks):
         super().__init__(landmarks)
 
-    def push_up(self, counter, status):
-        left_arm_angle = self.angle_of_the_left_arm()
-        right_arm_angle = self.angle_of_the_left_arm()
-        avg_arm_angle = (left_arm_angle + right_arm_angle) // 2
+    def control(self, counter, status, hint):
+        right_hand = detection_body_part(self.landmarks, "LEFT_INDEX")
+        right_shoulder = detection_body_part(self.landmarks, "LEFT_SHOULDER") 
+        left_hand = detection_body_part(self.landmarks, "RIGHT_INDEX")
+        left_shoulder = detection_body_part(self.landmarks, "RIGHT_SHOULDER")
 
-        if status:
-            if avg_arm_angle < 70:
-                counter += 1
+        # 肩寬
+        length_center_x = abs((left_shoulder[0]-right_shoulder[0])*100)
+
+        
+        # 右手與右肩距離
+        length_rshder_rhand_x = (right_hand[0]-right_shoulder[0])*100
+        length_rshder_rhand_y = (right_hand[1]-right_shoulder[1])*100
+        length_rshder_rhand = math.hypot(right_hand[0]-right_shoulder[0], right_hand[1]-right_shoulder[1])*100
+        # 左手左肩
+        length_lshder_lhand_x = (left_hand[0]-left_shoulder[0])*100
+        length_lshder_lhand_y = (left_hand[1]-left_shoulder[1])*100         
+        length_lshder_lhand = math.hypot(left_hand[0]-left_shoulder[0], left_hand[1]-left_shoulder[1])*100
+
+        
+        
+        if status and right_shoulder[2]>0.5 and right_hand[2]>0.5:
+            if length_rshder_rhand_x > length_center_x*1.2 or length_lshder_lhand_x > length_center_x:
+                hint="right"
+                # autopy.key.tap(autopy.key.Code.RIGHT_ARROW)
+                pyautogui.press('right')
                 status = False
-        else:
-            if avg_arm_angle > 160:
-                status = True
-
-        return [counter, status]
-
-    # def push_up_method_2():
-
-    def pull_up(self, counter, status):
-        nose = detection_body_part(self.landmarks, "NOSE")
-        left_elbow = detection_body_part(self.landmarks, "LEFT_ELBOW")
-        right_elbow = detection_body_part(self.landmarks, "RIGHT_ELBOW")
-        avg_shoulder_y = (left_elbow[1] + right_elbow[1]) / 2
-
-        if status:
-            if nose[1] > avg_shoulder_y:
-                counter += 1
+                # print(status,hint,length_rshder_rhand)
+            elif length_rshder_rhand_x < -length_center_x or length_lshder_lhand_x < -length_center_x*1.2:
+                hint="left"
+                # autopy.key.tap(autopy.key.Code.LEFT_ARROW)
+                pyautogui.press('left')
                 status = False
+                # print(status,hint,length_rshder_rhand)
 
-        else:
-            if nose[1] < avg_shoulder_y:
-                status = True
-
-        return [counter, status]
-
-    def squat(self, counter, status):
-        left_leg_angle = self.angle_of_the_right_leg()
-        right_leg_angle = self.angle_of_the_left_leg()
-        avg_leg_angle = (left_leg_angle + right_leg_angle) // 2
-
-        if status:
-            if avg_leg_angle < 70:
-                counter += 1
+            elif length_rshder_rhand_y < -length_center_x*1.5:
+                hint="up"
+                # autopy.key.tap(autopy.key.Code.UP_ARROW)
+                pyautogui.press('up')
                 status = False
-        else:
-            if avg_leg_angle > 160:
-                status = True
-
-        return [counter, status]
-
-    def walk(self, counter, status):
-        right_knee = detection_body_part(self.landmarks, "RIGHT_KNEE")
-        left_knee = detection_body_part(self.landmarks, "LEFT_KNEE")
-
-        if status:
-            if left_knee[0] > right_knee[0]:
-                counter += 1
+                # print(status,hint,length_rshder_rhand)
+                
+            elif length_lshder_lhand_y < -length_center_x*1.5:
+                hint="left_up"
+                pyautogui.press('down')
                 status = False
+                # print(status,hint,length_lshder_lhand)
 
+
+        elif length_rshder_rhand >= length_center_x*1.2 and right_shoulder[2]>0.5 and right_hand[2]>0.5:
+            time.sleep(1)
+            status = True
+            # print(status,length_rshder_rhand)
         else:
-            if left_knee[0] < right_knee[0]:
-                counter += 1
-                status = True
+            status = False
+            # print(status,length_rshder_rhand)
 
-        return [counter, status]
+        return [counter, status, hint]
 
-    def sit_up(self, counter, status):
-        angle = self.angle_of_the_abdomen()
-        if status:
-            if angle < 55:
-                counter += 1
-                status = False
-        else:
-            if angle > 105:
-                status = True
+    
 
-        return [counter, status]
-
-    def lift_leg(self, counter, status):
-        angle = self.angle_of_the_abdomen()
-        if status:
-            if angle < 115:
-                counter += 1
-                status = False
-        else:
-            if angle > 150:
-                status = True
-
-        return [counter, status]
-
-    def calculate_exercise(self, exercise_type, counter, status):
-        if exercise_type == "push-up":
-            counter, status = TypeOfExercise(self.landmarks).push_up(
-                counter, status)
-        elif exercise_type == "pull-up":
-            counter, status = TypeOfExercise(self.landmarks).pull_up(
-                counter, status)
-        elif exercise_type == "squat":
-            counter, status = TypeOfExercise(self.landmarks).squat(
-                counter, status)
-        elif exercise_type == "walk":
-            counter, status = TypeOfExercise(self.landmarks).walk(
-                counter, status)
-        elif exercise_type == "sit-up":
-            counter, status = TypeOfExercise(self.landmarks).sit_up(
-                counter, status)
-        elif exercise_type == "lift-leg":
-            counter, status = TypeOfExercise(self.landmarks).lift_leg(
-                counter, status)
-
-        return [counter, status]
+    def calculate_exercise(self, exercise_type, counter, status, hint):
+        if exercise_type == "control":
+            counter, status, hint = TypeOfControl(self.landmarks).control(
+                counter, status, hint)
+        return [counter, status, hint]

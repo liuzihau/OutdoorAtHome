@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健身頁面</title>
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/htmleaf-demo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fitness.css') }}">
+</head>
+<body>
+    <div class="content-body">
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 id="workout_type" class="card-title">健身</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-8">
+                                    <img src="{{ url_for('fitness_feed', exercise_type=exercise_type) }}" width="100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4">
+                    <div class="card1">
+                        <div class="card-body text-center">
+                            <div class="m-t-10">
+                                <h3 class="card-title">次數</h4>
+                                <h2 id="count" class="mt-3">count</h2>
+                                <h3 class="card-title">提示</h4>
+                                <h6 id="hint" class="mt-3">hint</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8  offset-lg-2">
+                <h3 class="mt-5">Live Streaming</h3>
+                <img src="{{ url_for('fitness_feed', exercise_type=exercise_type) }}" width="50%">
+            </div>
+        </div>
+    </div> -->
+    <script>
+        let workout_type = document.getElementById("workout_type");
+        let count = document.getElementById("count");
+        let hint = document.getElementById("hint");
+
+        setInterval(() => {
+            fetch("{{ url_for('status_feed') }}")
+            .then(response => {
+                    response.text().then(t => {workout_type.innerHTML = t.split(",")[0]})
+                });
+            }, 1000);  
+        setInterval(() => {
+            fetch("{{ url_for('status_feed') }}")
+            .then(response => {
+                    response.text().then(t => {count.innerHTML = t.split(",")[1]})
+                });
+            }, 1000);  
+        setInterval(() => {
+            fetch("{{ url_for('status_feed') }}")
+            .then(response => {
+                    response.text().then(t => {hint.innerHTML = t.split(",")[3]})
+                });
+            }, 1000);  
+    </script>
+</body>
+
+
+</html>
