@@ -61,7 +61,7 @@ def control_frames():
         while cap.isOpened():
             ret, frame = cap.read()
             # result_screen = np.zeros((250, 400, 3), np.uint8)
-
+            frame = cv2.flip(frame,1)
             frame = cv2.resize(frame, (w, h), interpolation=cv2.INTER_AREA)
             ## recolor frame to RGB
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -123,9 +123,9 @@ def control_frames():
             #score_frame = score_table(args["exercise_type"], counter, status, hint)
             #print(frame.shape,score_frame.shape)
             #im_h_resize = cv2.hconcat([frame, score_frame])
-            #ret, buffer = cv2.imencode('.jpg', im_h_resize)
-            #frame = buffer.tobytes()
-            frame = frame.tobytes()
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            # frame = frame.tobytes()
             yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
