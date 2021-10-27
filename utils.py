@@ -57,7 +57,7 @@ def detection_body_parts(landmarks):
 
     return body_parts
 
-def score_table(exercise, counter, status, hint, time='00:00:00'):
+def score_table(exercise, counter, status , hint, time='00:00:00'):
     
 
     #先讀一張圖當作背景
@@ -77,13 +77,14 @@ def score_table(exercise, counter, status, hint, time='00:00:00'):
     #hint
     cv2.putText(score_table, "Hint : " + str(hint), (10, 205),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (182, 158, 128), 2, cv2.LINE_AA)
-    cv2.imshow("Score Table", score_table)
+    return score_table
+    # cv2.imshow("Score Table", score_table)
 
 
 
-    cv2.putText(score_table, "Time : " + str(time), (10, 170),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (182, 158, 128), 2, cv2.LINE_AA)
-    cv2.imshow("Score Table", score_table)
+#     cv2.putText(score_table, "Time : " + str(time), (10, 170),
+#                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (182, 158, 128), 2, cv2.LINE_AA)
+    # cv2.imshow("Score Table", score_table)
 
 def timer(start_time):
     time_diff = time.time()-start_time
