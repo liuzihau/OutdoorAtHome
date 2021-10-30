@@ -1,13 +1,23 @@
 # Playground
-Fast Try:
+You need to download some weight file to run this project
 ```
-python try.py -t sit-up -vs videos\test.mkv
+https://drive.google.com/file/d/1O14nbbJeQUHxDTA1HFWtvL3q4f-JftwA/view?usp=sharing
 ```
-test video: https://youtu.be/qPxOAV6PR-M?list=LL
+This project cotains:
+1) Openpose 
+```
+https://github.com/CMU-Perceptual-Computing-Lab/openpose
+```
+2) Self-Correction-Human-Parsing
+```
+https://github.com/PeikeLi/Self-Correction-Human-Parsing
+```
+3) VITON-HD
+```
+https://github.com/shadow2496/VITON-HD
+```
+4) some music or sample video from YT
 
-```
-python play.py -t game1
-```
 ### Fitness
 ### Play
 ### Virtual Try On
