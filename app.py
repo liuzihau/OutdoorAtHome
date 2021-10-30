@@ -492,7 +492,7 @@ def run_win_cmd(cmd):
 ##子豪新增部分  跑穿衣的影像
 def tryon_frames():
     ## music setting (if needed)
-    file = f"sounds/fashion.wav"
+    file = f"sounds/fashion.mp3"
     pygame.mixer.init()
     pygame.mixer.music.load(file)
     soundon = 0
