@@ -3,6 +3,10 @@ You need to download some weight file to run this project
 ```
 https://drive.google.com/file/d/1O14nbbJeQUHxDTA1HFWtvL3q4f-JftwA/view?usp=sharing
 ```
+### previous version:
+```
+https://drive.google.com/file/d/1zVSaaLiRbbHcmyfxVtOz2ZSDmSk-YbSq/view?usp=sharing
+```
 This project cotains:
 1) Openpose 
 ```
