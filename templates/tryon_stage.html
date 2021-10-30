@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h4 id="std">Here will be status</h4>
+        <div class="container">
+        <div class="row">
+            <div class="col-lg-8  offset-lg-2">
+                <h3 class="mt-5">Live Streaming</h3>
+                <img src="{{title}}" width="50%">
+            </div>
+        </div>
+    </div>
+    </body>
+    <script>
+        let my_text = document.getElementById("std");
+        setInterval(() => {
+            fetch("{{ url_for('status_feed') }}")
+            .then(response => {
+                    response.text().then(t => {my_text.innerHTML = t})
+                });
+            }, 1000);  
+    </script>
+
+</html>
