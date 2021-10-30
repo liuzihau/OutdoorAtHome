@@ -86,8 +86,11 @@ def score_table(exercise, counter, status , hint, time='00:00:00'):
 #                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (182, 158, 128), 2, cv2.LINE_AA)
     # cv2.imshow("Score Table", score_table)
 
-def timer(start_time):
-    time_diff = time.time()-start_time
+def timer(start_time,now=None):
+    if now == None:
+        time_diff = time.time()-start_time
+    else:
+        time_diff = now-start_time
     HR = str(int(time_diff // 3600 // 10 )) + str(int(time_diff // 3600 % 10))
     MIN = str(int(time_diff % 3600 // 60 // 10 )) + str(int(time_diff % 3600 // 60 % 10))
     SEC = str(int(time_diff % 60 // 10 )) +str(int(time_diff % 10))

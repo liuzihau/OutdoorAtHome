@@ -31,7 +31,7 @@ body {
     height: inherit;
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: 50% 45%;
+    background-position: 50% 40%;
 }
 
 #cube .front {
@@ -80,7 +80,7 @@ body {
 } */
 
 #cube {
-    transform: translateZ(-50vw);
+    transform: translateZ(-60vw);
 }
 
 #cube {
