@@ -1023,7 +1023,7 @@ def login():
     else:
         return render_template("login.html")
 
-  
+
 ## 主選單
 @app.route('/')
 def index():
@@ -1034,9 +1034,9 @@ def index():
     username = session.get('name')  # 取session
 
     if username == "abc":
-         return render_template('index.html')
+        return render_template('index.html')
     else:
-         return redirect('/login')
+        return redirect('/login')
 
     #return render_template('index.html')
 
@@ -1157,6 +1157,12 @@ def tryon_status_feed():
         with open('tryon.txt','r') as f:
             yield f.read()  # return also will work
     return Response(generate(), mimetype='text') 
+
+## 登出
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
 
 
 if __name__=='__main__':

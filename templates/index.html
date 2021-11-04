@@ -216,6 +216,17 @@
             }
         })
 
+        // 登出
+        $("body").on("keydown", function (ev) {
+            if (ev.key === "ArrowDown") {
+                down_count += 1;
+                if (down_count === 2) {
+                    location.href = "{{ url_for('logout') }}"
+                }
+                console.log(`page is ${page}`);
+            }
+        })
+
         // 淡入淡出
         $(document).ready(function () {
             $('body').css('display', 'none');
