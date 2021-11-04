@@ -1,6 +1,6 @@
 from datetime import datetime
-from flask import Flask, request, render_template, session, redirect, Response
-from datetime import *
+from flask import Flask, request, render_template, session, redirect, Response, flash
+from datetime import timedelta
 import cv2
 # import argparse
 from utils import *
@@ -1011,15 +1011,23 @@ def login():
         password = request.form['password']   #.encode('utf-8')
         if email == "abc@gmail.com":
             user = "user"
-            if user == None:
-                return "沒有這個帳號"
+            if user == None :
+                # return "沒有這個帳號"
+                flash('沒有這個帳號')
+                return render_template("login.html")
             if len(user) != 0:
                 if password == '12345':
                     session['name'] = 'abc'  
                     session['email'] = 'abc@gmail.com'
                     return render_template("index.html")
                 else:
-                    return "您的密碼錯誤"
+                    # return "您的密碼錯誤"
+                    flash('您的密碼錯誤')
+                    return render_template("login.html")
+        # 以下暫時寫的
+        else:
+            flash('沒有這個帳號')
+            return render_template("login.html")
     else:
         return render_template("login.html")
 
@@ -1073,7 +1081,7 @@ def game(game_type):
 def tryon_stage():
     #清空文件檔
     with open('tryon.txt','w+') as f:
-        f.write(f"True"+'\n')
+        f.write(f"True,"+'\n')
     return render_template('tryon_stage.html',title = 'tryon_feed')
 
 ## 運動頁面影像
