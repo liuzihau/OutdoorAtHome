@@ -1,4 +1,6 @@
+from datetime import datetime
 from flask import Flask, request, render_template, session, redirect, Response
+from datetime import *
 import cv2
 # import argparse
 from utils import *
@@ -1000,7 +1002,7 @@ def tryon_frames():
 
 
 ## ====flask路由====
-
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=8)
 ## 登入畫面
 @app.route('/login', methods=['GET', 'POST'])  # 支援get、post請求
 def login():
@@ -1028,10 +1030,10 @@ def index():
     # 先關聲音
     pygame.mixer.init()
     pygame.mixer.music.stop()
-    session['name'] = False
+    # session['name'] = False
     username = session.get('name')  # 取session
 
-    if username == "name":
+    if username == "abc":
          return render_template('index.html')
     else:
          return redirect('/login')
