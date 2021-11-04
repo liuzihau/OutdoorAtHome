@@ -141,6 +141,17 @@
             $('#cube').css('transform', rotation);
         };
 
+        // 穿衣頁面返回轉跳
+        var referrer = document.referrer;        
+        if (typeof referrer !== "undefined" && referrer.indexOf("/tryon_stage")>-1){
+            // 清掉來源網址
+            referrer == "undefined"
+            page=4;
+            counter = -270;
+            var rotation = 'translateZ( -50vw ) rotateY( ' + counter + 'deg )';
+            $('#cube').css('transform', rotation);
+        };
+
 
         // 右按鈕
         $("body").on("keydown", function (ev) {
@@ -189,6 +200,17 @@
                 up_count += 1;
                 if (up_count === 2) {
                     location.href = "{{ url_for('game_menu') }}"
+                }
+                console.log(`page is ${page}`);
+            }
+        })
+
+        // 進入換衣
+        $("body").on("keydown", function (ev) {
+            if (ev.key === "ArrowUp" && page === 4) {
+                up_count += 1;
+                if (up_count === 2) {
+                    location.href = "{{ url_for('tryon_stage') }}"
                 }
                 console.log(`page is ${page}`);
             }

@@ -1,1 +1,1 @@
-squat,2,True,Squat slowly and keeping your weight behind your center of gravity
+True,squat,0,True,Ready!,0.39139866828918457

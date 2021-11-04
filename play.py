@@ -3,6 +3,7 @@ This file is originally from "Sports With AI" https://github.com/Furkan-Gulsen/S
 '''
 import cv2
 import argparse
+from app import game_status_feed
 from utils import *
 import mediapipe as mp
 from body_part_angle import BodyPartAngle
@@ -27,6 +28,7 @@ file = f"sounds/game1.mp3"
 pygame.mixer.init()
 pygame.mixer.music.load(file)
 soundon = 0
+game_status = 0 #start
 
 
 
@@ -77,11 +79,14 @@ with mp_pose.Pose(min_detection_confidence=0.8,
         #參數被畫在畫布上的樣子
         frame = game_plot(args["game_type"],frame,env_coordinate)
         #================================================================
+
+
         try:
             if soundon==0 :
                 pygame.mixer.music.play()
                 soundon = 1
                 start_time = time.time()
+
 
             landmarks = results.pose_landmarks.landmark
             total_status = []
@@ -156,7 +161,7 @@ with mp_pose.Pose(min_detection_confidence=0.8,
                     img_height, img_width, _ = glove.shape
                     #手套的參考長度          
                     glove_size= (distance_of_KNEE_HIP*2)
-                    print(f'glove_size:{glove_size}')            
+                    # print(f'glove_size:{glove_size}')            
                     #圖片轉換成適合的大小
                     glove = cv2.resize( glove, (glove_size, glove_size),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)                
                     # 第一個參數旋轉中心(圖片中心)，第二個參數旋轉角度(-順時針/+逆時針)，第三個參數縮放比例
@@ -182,7 +187,7 @@ with mp_pose.Pose(min_detection_confidence=0.8,
                     img_height, img_width, _ = glove.shape
                     #手套的參考長度          
                     glove_size= (distance_of_KNEE_HIP*2)
-                    print(f'glove_size:{glove_size}')            
+                    # print(f'glove_size:{glove_size}')            
                     #圖片轉換成適合的大小
                     glove = cv2.resize( glove, (glove_size, glove_size),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)                
                     # 第一個參數旋轉中心(圖片中心)，第二個參數旋轉角度(-順時針/+逆時針)，第三個參數縮放比例
@@ -210,7 +215,7 @@ with mp_pose.Pose(min_detection_confidence=0.8,
                     img_height, img_width, _ = glove.shape                        
                     glove_size= (distance_of_KNEE_HIP*2)
                     glove = cv2.resize( glove, (glove_size, glove_size),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)
-                    print(f'y_RIGHT_ELBOW {y_RIGHT_ELBOW},y_RIGHT_WRIST {y_RIGHT_WRIST}')
+                    # print(f'y_RIGHT_ELBOW {y_RIGHT_ELBOW},y_RIGHT_WRIST {y_RIGHT_WRIST}')
                     if y_RIGHT_ELBOW >= y_RIGHT_WRIST:                    
                         M = cv2.getRotationMatrix2D((glove_size // 2, glove_size // 2), round(angle.right_angle_of_the_elbow_horizon()-90), 1.0)
                     else:                 
@@ -231,7 +236,7 @@ with mp_pose.Pose(min_detection_confidence=0.8,
                     img_height, img_width, _ = glove.shape                        
                     glove_size= (distance_of_KNEE_HIP*2)
                     glove = cv2.resize( glove, (glove_size, glove_size),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)
-                    print(f'y_RIGHT_ELBOW {y_RIGHT_ELBOW},y_RIGHT_WRIST {y_RIGHT_WRIST}')
+                    # print(f'y_RIGHT_ELBOW {y_RIGHT_ELBOW},y_RIGHT_WRIST {y_RIGHT_WRIST}')
                     if y_RIGHT_ELBOW >= y_RIGHT_WRIST:                    
                         M = cv2.getRotationMatrix2D((glove_size // 2, glove_size // 2), round(angle.right_angle_of_the_elbow_horizon()-90), 1.0)
                     else:                 
@@ -282,6 +287,13 @@ with mp_pose.Pose(min_detection_confidence=0.8,
         # BodyPartAngle.angle_of_the_neck
         # BodyPartAngle.angle_of_the_abdomen
 
+        print(timer(start_time))
+        if timer(start_time) == "00:01:00":
+            game_status = 1 #end
+        print(game_status)
+
+        with open('game.txt','w+') as f:
+                f.write(f"{game_status},{counter}"+'\n')
 
         cv2.imshow('Video', frame)
         if cv2.waitKey(20) & 0xFF == ord('q'):

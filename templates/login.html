@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入頁面</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='fontawesome/css/all.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='animate/animate.css') }}">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-image: url("{{ url_for('static', filename='img/background4.jpg') }}");
+            /* background-position: center; */
+            background-repeat: no-repeat;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+        
+        .navbar-nav .nav-item .cart-num {
+            background-color: #f7417f;
+            font-size: 10px;
+            line-height: 10px;
+            text-align: center;
+            position: absolute;
+            top: 1px;
+            right: -2px;
+            padding: 3px 6px;
+            border-radius: 8px;
+        }
+        
+        .navbar-nav .nav-item .cart-no {
+            display: none;
+        }
+        
+        @media screen and (max-width:1200px) {
+            .carousel-caption {
+                top: 20%;
+                right: auto;
+                bottom: auto;
+                left: 40%;
+            }
+            .carousel-caption span a {
+                color: rgb(250, 149, 149);
+                font-size: 65px;
+                font-weight: 600;
+                padding: 0px;
+                text-align: left;
+            }
+        }
+        
+        @media screen and (min-width:1201px) {
+            .carousel-caption {
+                top: 35%;
+                right: auto;
+                bottom: auto;
+                left: 23%;
+            }
+            .carousel-caption span a {
+                color: rgb(250, 149, 149);
+                font-size: 100px;
+                font-weight: 600;
+                padding: 0px;
+                text-align: left;
+            }
+        }
+        
+        footer {
+            position: fixed;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            color: #619e43;
+        }
+        
+        footer a {
+            color: #69ac48;
+        }
+        
+        .logtitle {
+            color: rgb(250, 149, 149);
+            text-align: center;
+        }
+    </style>
+</head>
+<!-- Hide Head Bar -->
+<!-- 
+<body class="text-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <ul class="navbar-nav mr-auto">
+            <a class="navbar-brand" href="/">
+                BOOTCAMP <i class="fas fa-laptop-code"></i> 
+            </a>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/status">Status</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/amazing">Amazing</a>
+            </li>
+
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item" id="cartalert" style="position: relative;">
+                <a id="cart" class="nav-link" href="/cart"><i class="fas fa-cart-arrow-down "></i>
+                    <span id="cartnum" class="<%= session.cart ? `cart-num` : `cart-no` %>">
+                    </span>
+                </a>
+
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/account/list">Admin</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/account/edit" style="padding-left: 16px;">Edit</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/SignUp">SignUp</a>
+            </li>
+
+        </ul>
+    </nav> -->
+
+    <div class="mt-5 p-5 container d-flex">
+
+        <div class="mt-5 p-5 container">
+            <h2 class="logtitle">LOGIN</h2>
+            <form name='user_login' method='post' action="" enctype="multipart/form-data">
+                <div class="mt-5 container col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <div class="mt-5 container">
+                    <button type="submit" class="btn btn-primary d-block mx-auto">Login</button>
+                    <div id="info" class="m-3 p-0 col-md-4 mx-auto text-center alert alert-success" role="alert" style='position: fixed;top: auto;bottom: 100px;left: auto; right: 100px;display: none;font-weight: 700;font-size: 24px;'></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="m-5 p-5 container text-center">
+    </div>
+    <div class="m-5 p-5 container text-center">
+    </div>
+    <!-- footer section Hide掉 -->
+    <!-- <footer class="navbar navbar-expand-lg bg-dark">
+        <ul class="navbar-nav mr-auto">
+            <li class=" nav-item active">
+                <a class="nav-link" href="#"><i class="fab fa-facebook"></i></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#"><i class="fab fa-instagram"></i></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#"><i class="fab fa-twitter"></i></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#"><i class="fas fa-envelope-square"></i></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active" style="text-align: right;">
+                ©2021 Course Guide
+            </li>
+        </ul>
+    </footer> -->
+    <!-- footer section -->
+    <script src="{{ url_for('static', filename='lib/jquery-3.6.0.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='animate/wow.js') }}"></script>
+    <script>
+        new WOW().init();
+    </script>
+</body>
+
+</html>

@@ -92,12 +92,12 @@ class Rectangle():
 
 def tryon_start(tryon_type):
     if tryon_type == "tryon1":
-        l1 = Rectangle(start=(300,440),length=(200,300),time = 5,position='choice0')
-        l2 = Rectangle(start=(400,90),length=(200,300),time = 5,position='choice1')
-        r1 = Rectangle(start=(1000,90),length=(200,300),time = 5,position='choice2')
-        r2 = Rectangle(start=(1100,440),length=(200,300),time = 5,position='choice3')
-        ok = Rectangle(start=(620,60),length=(160,160),time = 5,position='ok')
-        reset = Rectangle(start=(820,60),length=(160,160),time = 5,position='reset')
+        l1 = Rectangle(start=(260,640),length=(240,360),time = 5,position='choice0')
+        l2 = Rectangle(start=(360,220),length=(240,360),time = 5,position='choice1')
+        r1 = Rectangle(start=(1000,220),length=(240,360),time = 5,position='choice2')
+        r2 = Rectangle(start=(1100,640),length=(240,360),time = 5,position='choice3')
+        ok = Rectangle(start=(620,160),length=(160,160),time = 5,position='ok')
+        reset = Rectangle(start=(820,160),length=(160,160),time = 5,position='reset')
         return [l1,l2,r1,r2,ok,reset]
 
 def add_product(path):
@@ -107,21 +107,21 @@ def add_product(path):
     for i,file in enumerate(files):
         name = file.split('.')[0]
         if i % 4 == 0:
-            p = Rectangle(start=(300,440),length=(200,300),time = 3,position=f'test-{i}-{name}')
+            p = Rectangle(start=(300,640),length=(240,360),time = 3,position=f'test-{i}-{name}')
             p_list.append(p)
         elif i % 4 == 1:
-            p = Rectangle(start=(400,90),length=(200,300),time = 3,position=f'test-{i}-{name}')
+            p = Rectangle(start=(400,220),length=(240,360),time = 3,position=f'test-{i}-{name}')
             p_list.append(p)
         elif i % 4 == 2:
-            p = Rectangle(start=(1000,90),length=(200,300),time = 3,position=f'test-{i}-{name}')
+            p = Rectangle(start=(1000,220),length=(240,360),time = 3,position=f'test-{i}-{name}')
             p_list.append(p)
         elif i % 4 == 3:
-            p = Rectangle(start=(1100,440),length=(200,300),time = 3,position=f'test-{i}-{name}')
+            p = Rectangle(start=(1100,640),length=(240,360),time = 3,position=f'test-{i}-{name}')
             p_list.append(p)
-    ok = Rectangle(start=(620,60),length=(160,160),time = 5,position='ok')
-    reset = Rectangle(start=(820,60),length=(160,160),time = 5,position='reset')
-    next = Rectangle(start=(880,540),length=(160,160),time = 5,position='next')
-    prev = Rectangle(start=(560,540),length=(160,160),time = 5,position='prev')
+    ok = Rectangle(start=(620,160),length=(160,160),time = 5,position='ok')
+    reset = Rectangle(start=(820,160),length=(160,160),time = 5,position='reset')
+    next = Rectangle(start=(880,670),length=(160,160),time = 5,position='next')
+    prev = Rectangle(start=(560,670),length=(160,160),time = 5,position='prev')
     return p_list,[ok,reset,next,prev]
 
 def tryon_play(tryon_type,env_list,time):

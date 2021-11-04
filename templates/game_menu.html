@@ -20,17 +20,18 @@
             <div id="cube">
                 <figure class="front">
                     <div class="col-md-12 col-sm-12"
-                        style="background-image: url({{ url_for('static', filename='img/game_123.png') }});"></div>
+                        style="background-image: url({{ url_for('static', filename='img/game_123.png') }});">
+                    </div>
 
                 </figure>
                 <figure id='fitness' class="right">
                     <div class="col-md-12"
-                        style="background-image:url({{ url_for('static', filename='img/game_123.png') }});">
+                        style="background-image:url({{ url_for('static', filename='img/game_punch.png') }});">
 
                 </figure>
                 <figure id='dress' class="left">
                     <div class="col-md-12"
-                        style="background-image:url({{ url_for('static', filename='img/game_123.png') }});">
+                        style="background-image:url({{ url_for('static', filename='img/game_dance.png') }});">
                     </div>
 
                     <figure class="top"></figure>
@@ -58,17 +59,21 @@
         var right_count = 0;
         var left_count = 0;
 
-
-        // // 運動頁面返回轉跳
-        // var referrer = document.referrer;        
-        // if (typeof referrer !== "undefined" && referrer.indexOf("/sport")>-1){
-        //     // 清掉來源網址
-        //     referrer == "undefined"
-        //     page=2;
-        //     counter = -120;
-        //     var rotation = 'translateZ( -50vw ) rotateY( ' + counter + 'deg )';
-        //     $('#cube').css('transform', rotation);
-        // };
+        // 遊戲返回轉跳
+        let pagenote = {
+            "1":"game2",
+            "2":"game1",
+            "3":"game3"
+        }
+        var referrer = document.referrer;   
+        for (const type in pagenote){
+            if (typeof referrer !== "undefined" && referrer.indexOf(pagenote[type])>-1){
+            page=type*1;
+            counter = -120*(type-1);
+            var rotation = 'translateZ( -10vw ) rotateY( ' + counter + 'deg )';
+            $('#cube').css('transform', rotation);
+        };
+        }
 
 
         // 右按鈕
@@ -112,7 +117,34 @@
             }
         })
 
-        // 開始玩遊戲
+        // 開始玩遊戲(上按鈕)
+        $("body").on("keydown", function (ev) {
+            if (ev.key === "ArrowUp" && page===1) {
+                up_count += 1;
+                if (up_count === 2) {
+                    location.href = "{{ url_for('game',game_type = 'game2' ) }}"
+                }
+                console.log(`page is ${page}`);
+            }
+        })        
+        $("body").on("keydown", function (ev) {
+            if (ev.key === "ArrowUp" && page===2) {
+                up_count += 1;
+                if (up_count === 2) {
+                    location.href = "{{ url_for('game',game_type = 'game1' ) }}"
+                }
+                console.log(`page is ${page}`);
+            }
+        })        
+        $("body").on("keydown", function (ev) {
+            if (ev.key === "ArrowUp" && page===3) {
+                up_count += 1;
+                if (up_count === 2) {
+                    location.href = "{{ url_for('game',game_type = 'game3' ) }}"
+                }
+                console.log(`page is ${page}`);
+            }
+        })   
 
 
         // 淡入淡出

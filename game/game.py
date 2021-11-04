@@ -56,30 +56,40 @@ class TypeOfMove(BodyPartAngle):
         return [counter, status]
     
     def game2(self, counter, status, env):
+        # print('game2 game2 start')
         right_knee = detection_body_part(self.landmarks, "RIGHT_KNEE")
         left_knee = detection_body_part(self.landmarks, "LEFT_KNEE")
+        right_ankle = detection_body_part(self.landmarks, "RIGHT_ANKLE")
+        left_ankle = detection_body_part(self.landmarks, "LEFT_ANKLE")
+        right_hip = detection_body_part(self.landmarks, "RIGHT_HIP")
+        left_hip = detection_body_part(self.landmarks, "LEFT_HIP")
+        # print('game2 game detect')
 
         if status:
-            if left_knee[0] > right_knee[0]:
+            if left_knee[1] < right_hip[1]+0.2 and left_knee[2]>0.8:
                 counter += 1
                 status = False                
 
         else:
-            if left_knee[0] < right_knee[0]:
-                counter += 1
+            if right_knee[1] < left_hip[1]+0.2 and right_knee[2]>0.8:
+                # counter += 1
                 status = True
+        # print('game2 game2 counter ok')
+
 
         return [counter, status]
     
 
     def calculate_exercise(self, game_type, counter, status, env=None):
+        # print('enter cal')
         if game_type == "game1":
             counter, status = TypeOfMove(self.landmarks).game1(
                 counter, status, env)
         elif game_type == "game2":
+            # print('enter game2')
             counter, status = TypeOfMove(self.landmarks).game2(
                 counter, status, env)
-
+            # print('game2 end success')
         return [counter, status]
 
 
@@ -124,11 +134,11 @@ class Rectangle():
 
     def play(self,status,time): 
         self.status = status
-        if 0<(time-self.time)<0.2 and self.status: 
+        if 0<(time-self.time) < 0.2 and self.status: 
             self.status = False
             self.start = (self.start[0]+int(self.length[0]*random.random()*.1),self.start[1]+int(self.length[1]*random.random()*.1)) #計算XY
             self.length = (self.length[0],self.length[1])
-        if (time-self.time)<3 and not self.status:
+        if (time-self.time) < 3 and not self.status:
             self.opaque = 1 # min(1,self.opaque+0.2) #透明度調整最大值為1
             return self.status,self.start,self.length,self.opaque,self.position
         else:
@@ -147,7 +157,7 @@ def game_start(game_type):
         # for i in range(len(tick)):
         for g in tick:
             # print(g)
-
+            
 ## =====雨軒修改: 針對1280*960螢幕比例重新規劃出現位置=====
             if random.random()>0.3:
                 choice = random.sample([[(800,320),(200,150),'left_hand'],[(300,320),(200,150),'right_hand']],k=1)

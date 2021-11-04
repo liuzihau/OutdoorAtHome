@@ -5,10 +5,6 @@ import numpy as np
 import math
 from body_part_angle import BodyPartAngle
 from utils import *
-import pygame
-import time
-from sounds.sound import fitness_sound
-
 
 class TypeOfExercise(BodyPartAngle):
     def __init__(self, landmarks):
@@ -30,61 +26,64 @@ class TypeOfExercise(BodyPartAngle):
                 status = True
         if hint:
             if avg_leg_angle > 165:
-                hint= "Squat slowly and keeping your weight behind your center of gravity"            
+                #hint= "Squat slowly and keeping your weight behind your center of gravity"
+                hint= "慢慢往下蹲，將重心放在後腳跟 "          
             elif avg_leg_angle > 70 and avg_leg_angle <= 90:
-                hint= "Squat lower"
+                #hint= "squat lower"
+                hint= "再稍微蹲低一些"
             elif abdomen_angle < 60:
-                hint= "Chest up and shift the center of gravity backward"  
+                #hint= "Chest up and shift the center of gravity backward"  
+                hint= "挺胸背打直，將重心稍微移向後方"
         
         return [counter, status, hint]
 
-    #抬腿lying leg raises(側面)(核心)
-    def lift_leg(self, counter, status, hint):
-        abdomen_angle = self.angle_of_the_abdomen()
-        neck_angle = self.angle_of_the_neck()
-        if status:
-            if abdomen_angle < 145:
-                counter += 1
-                status = False
-        else:
-            if abdomen_angle > 160:
-                status = True
+    # #抬腿lying leg raises(側面)(核心)
+    # def lift_leg(self, counter, status, hint):
+    #     abdomen_angle = self.angle_of_the_abdomen()
+    #     neck_angle = self.angle_of_the_neck()
+    #     if status:
+    #         if abdomen_angle < 145:
+    #             counter += 1
+    #             status = False
+    #     else:
+    #         if abdomen_angle > 160:
+    #             status = True
 
-        if hint:
-            if abdomen_angle > 175:
-                hint= "Try to lift your legs higher "            
-            elif abdomen_angle < 95:
-                hint= "Try to lift your legs lower"
-            elif neck_angle > 80:
-                hint= "Avoid forces your neck muscles to bend forward"
+    #     if hint:
+    #         if abdomen_angle > 175:
+    #             hint= "Try to lift your legs higher "            
+    #         elif abdomen_angle < 95:
+    #             hint= "Try to lift your legs lower"
+    #         elif neck_angle > 80:
+    #             hint= "Avoid forces your neck muscles to bend forward"
             
-        return [counter, status, hint]
+    #     return [counter, status, hint]
 
-    # 橋式bridge(側面)(臀)
-    def bridge(self, counter, status, hint):
-        # 利用挺腰角度判斷
-        abdomen_angle = self.angle_of_the_abdomen()
-        # 小腿與地面夾角  
-        calf_horizon = self.angle_of_the_calf_horizon()      
+    # # 橋式bridge(側面)(臀)
+    # def bridge(self, counter, status, hint):
+    #     # 利用挺腰角度判斷
+    #     abdomen_angle = self.angle_of_the_abdomen()
+    #     # 小腿與地面夾角  
+    #     calf_horizon = self.angle_of_the_calf_horizon()      
 
-        # print(angle)
-        if status:
-            if abdomen_angle > 160:
-                counter += 1
-                status = False
-        else:
-            if abdomen_angle < 120:
-                status = True
+    #     # print(angle)
+    #     if status:
+    #         if abdomen_angle > 160:
+    #             counter += 1
+    #             status = False
+    #     else:
+    #         if abdomen_angle < 120:
+    #             status = True
 
-        if hint:
-            if abdomen_angle < 120:
-                hint= "Flat the waist to the ground and tighten your glutes"
-            elif calf_horizon > 110 or calf_horizon < 70:
-                hint= "Try to put your calves at a 90-degree angle to the ground"            
-            elif abdomen_angle > 178:
-                hint= "Avoid raising your hips too high"            
+    #     if hint:
+    #         if abdomen_angle < 120:
+    #             hint= "Flat the waist to the ground and tighten your glutes"
+    #         elif calf_horizon > 110 or calf_horizon < 70:
+    #             hint= "Try to put your calves at a 90-degree angle to the ground"            
+    #         elif abdomen_angle > 178:
+    #             hint= "Avoid raising your hips too high"            
                 
-        return [counter, status, hint]
+    #     return [counter, status, hint]
 
     # 單車式卷腹 Bicycle crunch(側面)(核心)O
     def bicycle(self, counter, status, hint):
@@ -111,9 +110,11 @@ class TypeOfExercise(BodyPartAngle):
                     status = True
         if hint:
             if length_relb_lknee >= 0.15 or length_lelb_rknee >= 0.15:
-                hint= "Relax your neck muscles and tighten your core"
+                #hint= "Relax your neck muscles and tighten your core"
+                hint= "頸椎放鬆，收緊核心"
             elif neck_angle > 90:
-                hint= "Avoid forces your neck muscles to bend forward"
+                #hint= "Avoid forces your neck muscles to bend forward"
+                hint="避免壓迫頸椎 "
         return [counter, status, hint]
 
     #啞鈴側平舉 side_lateral_raise(正面)(肩)O
@@ -135,9 +136,11 @@ class TypeOfExercise(BodyPartAngle):
 
         if hint:
             if left_shoulder_angle > 90 or right_shoulder_angle > 90:
-                hint= "Stop your shoulders from shrugging"            
+                #hint= "Stop your shoulders from shrugging"    
+                hint= "放鬆肩膀，避免啞鈴提起時聳肩"        
             elif right_wrist[1] < right_elbow[1] or left_wrist[1] < left_elbow[1] :
-                hint= "Your elbow should higher than the dumbbell" 
+                #hint= "Your elbow should higher than the dumbbell"
+                hint= "提起時，手腕避免抬高過手肘" 
         
         return [counter, status, hint] 
 
@@ -158,10 +161,12 @@ class TypeOfExercise(BodyPartAngle):
 
         if hint:
             if abdomen_angle < 180:
-                hint= "Try to squeeze your butt glutes "            
+                #hint= "Try to squeeze your butt glutes "
+                hint= "收核心及緊臀部肌肉"            
             elif abdomen_angle > 170:
                 if avg_leg_angle < 80:
-                    hint= "Try to put your calves at a 90-degree angle to the ground"            
+                    #hint= "Try to put your calves at a 90-degree angle to the ground"
+                    hint= "試將小腿與地面保持90度"            
                 
         return [counter, status, hint]
         
@@ -185,9 +190,11 @@ class TypeOfExercise(BodyPartAngle):
         if hint:
             if avg_arm_angle > 150: 
                 if avg_shoulder_angle < 160:
-                    hint= "Try to press up your dumbbells closer"            
+                    #hint= "Try to press up your dumbbells closer" 
+                    hint= "將兩個啞鈴往上推向頭頂中央"           
             elif avg_arm_angle < 160:
-                hint= "Try to press up with straight arms"            
+                #hint= "Try to press up with straight arms"
+                hint= "向上推至頭頂時將手肘伸直"             
 
         return [counter, status, hint]
 
@@ -210,10 +217,12 @@ class TypeOfExercise(BodyPartAngle):
         if hint:
             if right_arm_angle < 90: 
                 if right_shoulder[1] > left_shoulder[1]:
-                    hint= "Try to press up your dumbbells back and across to contract your lats and abduction the arm"            
+                    #hint= "Try to press up your dumbbells back and across to contract your lats and abduction the arm"
+                    hint= "啞鈴向上提到最高時，試著收緊背部背闊肌"            
             elif left_arm_angle < 90: 
                 if left_shoulder[1] > right_shoulder[1]:
-                    hint= "Try to press up your dumbbells back and across to contract your lats and abduction the arm"
+                    #hint= "Try to press up your dumbbells back and across to contract your lats and abduction the arm"
+                    hint= "啞鈴向上提到最高時，試著收緊背部背闊肌"  
 
         return [counter, status, hint]
 
@@ -342,46 +351,48 @@ class TypeOfExercise(BodyPartAngle):
             
     #     return [counter, status, hint]
 
-    def calculate_exercise(self, exercise_type, counter, status, hint):
-        if exercise_type == "push-up":
-            counter, status, hint = TypeOfExercise(self.landmarks).push_up(
-                counter, status, hint)
-        elif exercise_type == "pull-up":
-            counter, status, hint = TypeOfExercise(self.landmarks).pull_up(
-                counter, status, hint)
-        elif exercise_type == "squat":
-            counter, status, hint = TypeOfExercise(self.landmarks).squat(
-                counter, status, hint)
-        elif exercise_type == "walk":
-            counter, status, hint = TypeOfExercise(self.landmarks).walk(
-                counter, status, hint)
-        elif exercise_type == "sit-up":
-            counter, status, hint = TypeOfExercise(self.landmarks).sit_up(
-                counter, status, hint)
-        elif exercise_type == "lift-leg":
-            counter, status, hint = TypeOfExercise(self.landmarks).lift_leg(
-                counter, status, hint)
-        elif exercise_type == "bridge":
-            counter, status, hint = TypeOfExercise(self.landmarks).bridge(
-                counter, status, hint)
-        elif exercise_type == "bicycle":
-            counter, status, hint = TypeOfExercise(self.landmarks).bicycle(
-                counter, status, hint)
-        elif exercise_type == "side_lateral_raise":
-            counter, status, hint = TypeOfExercise(self.landmarks).side_lateral_raise(
-                counter, status, hint)
-        elif exercise_type == "hip_thrust":
-            counter, status, hint = TypeOfExercise(self.landmarks).hip_thrust(
-                counter, status, hint)
-        elif exercise_type == "dumbbell_bench_press":
-            counter, status, hint = TypeOfExercise(self.landmarks).dumbbell_bench_press(
-                counter, status, hint)
-        elif exercise_type == "bent_over_row":
-            counter, status, hint = TypeOfExercise(self.landmarks).bent_over_row(
-                counter, status, hint)
-        elif exercise_type == "biceps_curls":
-            counter, status ,hint= TypeOfExercise(self.landmarks).biceps_curls(
-                counter, status, hint)
+    def calculate_exercise(self, exercise_type, counter, status, hint,switch=True):
+        if switch == True:
+            if exercise_type == "push-up":
+                counter, status, hint = TypeOfExercise(self.landmarks).push_up(
+                    counter, status, hint)
+            elif exercise_type == "pull-up":
+                counter, status, hint = TypeOfExercise(self.landmarks).pull_up(
+                    counter, status, hint)
+            elif exercise_type == "squat":
+                counter, status, hint = TypeOfExercise(self.landmarks).squat(
+                    counter, status, hint)
+            elif exercise_type == "walk":
+                counter, status, hint = TypeOfExercise(self.landmarks).walk(
+                    counter, status, hint)
+            elif exercise_type == "sit-up":
+                counter, status, hint = TypeOfExercise(self.landmarks).sit_up(
+                    counter, status, hint)
+            elif exercise_type == "lift-leg":
+                counter, status, hint = TypeOfExercise(self.landmarks).lift_leg(
+                    counter, status, hint)
+            elif exercise_type == "bridge":
+                counter, status, hint = TypeOfExercise(self.landmarks).bridge(
+                    counter, status, hint)
+            elif exercise_type == "bicycle":
+                counter, status, hint = TypeOfExercise(self.landmarks).bicycle(
+                    counter, status, hint)
+            elif exercise_type == "side_lateral_raise":
+                counter, status, hint = TypeOfExercise(self.landmarks).side_lateral_raise(
+                    counter, status, hint)
+            elif exercise_type == "hip_thrust":
+                counter, status, hint = TypeOfExercise(self.landmarks).hip_thrust(
+                    counter, status, hint)
+            elif exercise_type == "dumbbell_bench_press":
+                counter, status, hint = TypeOfExercise(self.landmarks).dumbbell_bench_press(
+                    counter, status, hint)
+            elif exercise_type == "bent_over_row":
+                counter, status, hint = TypeOfExercise(self.landmarks).bent_over_row(
+                    counter, status, hint)
+            elif exercise_type == "biceps_curls":
+                counter, status ,hint= TypeOfExercise(self.landmarks).biceps_curls(
+                    counter, status, hint)
 
-
-        return [counter, status, hint]
+            return [counter, status, hint]
+        else:
+            pass
