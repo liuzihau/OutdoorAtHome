@@ -49,7 +49,7 @@ body {
 
 #cube .front {
     transform: rotateY(0deg) translateZ(50vw) ;
-    background: rgba(0, 0, 0, 0.90);
+    background: rgba(0, 0, 0, 0.85);
 }
 
 #cube .frontout {
@@ -59,7 +59,7 @@ body {
 
 #cube .back {
     transform: rotateY(180deg) translateZ(50vw);
-    background: rgba(0, 0, 0, 0.90);
+    background: rgba(0, 0, 0, 0.85);
     /* opacity:0.90; */
 }
 
@@ -71,7 +71,7 @@ body {
 
 #cube .right {
     transform: rotateY(90deg) translateZ(50vw);
-    background: rgba(0, 0, 0, 0.90);
+    background: rgba(0, 0, 0, 0.85);
     /* opacity:0.90; */
 }
 #cube .rightout {
@@ -82,7 +82,7 @@ body {
 
 #cube .left {
     transform: rotateY(-90deg) translateZ(50vw);
-    background: rgba(0, 0, 0, 0.90);
+    background: rgba(0, 0, 0, 0.85);
     /* opacity:0.90; */
 }
 
