@@ -39,10 +39,10 @@
                     <div class="card_up_game"
                         style="background-image: url({{ url_for('static', filename='img/game_card_up.svg') }});">
                         <div class="card-body text-center">
-                            <video width="320" height="240" id='mv' muted src="" class="img-fluid rounded"
+                            <video width="640" height="480" id='mv' muted src="" class="img-fluid rounded"
                                 width="100%" style="display: none;">
                             </video>
-                            <div class="m-t-10 row">
+                            <div id="mv_hide" class="m-t-10 row">
                                 <div class="col-12 col-md-12">
                                     <h3 class="card-title" style="color: rgb(48, 88, 117);">GAME</h4>
                                         <h2 id="game_type" class="mt-3"
@@ -95,6 +95,7 @@
         let finish_text = document.getElementById("finish_text");
         let control = document.getElementById("control");
         let mv = document.getElementById('mv');
+        let mv_hide = document.getElementById('mv_hide');
         var up_count = 0;
         var down_count = 0;
 
@@ -125,6 +126,7 @@
         if (typeof loc !== "undefined" && loc.indexOf("/game3") > -1) {
             mv.setAttribute("style", "display: inline");
             mv.setAttribute("src", "{{ url_for('static', filename='img/handclap1m.mp4') }}")
+            mv_hide.setAttribute("style", "display: none")
         }
 
         // 結束畫面
