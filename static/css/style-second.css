@@ -36,35 +36,66 @@ body {
 
 #cube .front {
     transform: rotateY(0deg) translateZ(86vw);
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
+    /* opacity:0.90; */
+}
+#cube .frontout {
+    transform: perspective(6000vw) rotateY(0deg) translateZ(90vw);
+    /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
 
 #cube .back {
     transform: rotateY(180deg) translateZ(86vw);
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
+    /* opacity:0.90; */
+}
+#cube .backout {
+    transform: perspective(6000vw) rotateY(180deg) translateZ(90vw);
+    /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
 
 #cube .frontside {
     transform: rotateY(120deg) translateZ(86vw);
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
     /* opacity:0.90; */
 }
+#cube .frontsideout {
+    transform: perspective(6000vw) rotateY(120deg) translateZ(90vw);
+    /* background: rgba(0, 0, 0, 0.85); */
+    /* opacity:0.90; */
+}
+
 #cube .backside {
     transform: rotateY(-120deg) translateZ(86vw);
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
+    /* opacity:0.90; */
+}
+#cube .backsideout {
+    transform: perspective(6000vw) rotateY(-120deg) translateZ(90vw);
+    /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
 #cube .right {
     transform: rotateY(60deg) translateZ(86vw);
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
+    /* opacity:0.90; */
+}
+#cube .rightout {
+    transform: perspective(6000vw) rotateY(60deg) translateZ(90vw);
+    /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
 
 #cube .left {
     transform: rotateY(-60deg) translateZ(86vw);
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
+    /* opacity:0.90; */
+}
+#cube .leftout {
+    transform: perspective(6000vw) rotateY(-60deg) translateZ(90vw);
+    /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
 

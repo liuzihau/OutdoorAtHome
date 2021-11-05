@@ -1019,7 +1019,7 @@ def login():
                 if password == '12345':
                     session['name'] = 'abc'  
                     session['email'] = 'abc@gmail.com'
-                    return render_template("index.html")
+                    return render_template("index_3D.html")
                 else:
                     # return "您的密碼錯誤"
                     flash('您的密碼錯誤')
@@ -1042,7 +1042,7 @@ def index():
     username = session.get('name')  # 取session
 
     if username == "abc":
-        return render_template('index.html')
+        return render_template('index_3D.html')
     else:
         return redirect('/login')
 
@@ -1126,7 +1126,7 @@ def sport():
     # 先關聲音
     pygame.mixer.init()
     pygame.mixer.music.stop()
-    return render_template('sport.html')
+    return render_template('sport_3D.html')
 
 ## 遊戲選單
 @app.route('/game_menu')
@@ -1134,7 +1134,7 @@ def game_menu():
     # 先關聲音
     pygame.mixer.init()
     pygame.mixer.music.stop()
-    return render_template('game_menu.html')
+    return render_template('game_menu_3D.html')
 
 
 # ## 測試選單

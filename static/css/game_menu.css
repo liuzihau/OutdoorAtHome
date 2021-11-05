@@ -38,6 +38,10 @@ body {
     transform: rotateY(0deg) translateZ(28vw);
     background: rgba(0, 0, 0, 0.85);
 }
+#cube .frontout {
+    transform: rotateY(0deg) translateZ(35vw);
+    /* background: rgba(0, 0, 0, 0.85); */
+}
 
 
 #cube .right {
@@ -45,11 +49,20 @@ body {
     background: rgba(0, 0, 0, 0.85);
     /* opacity:0.90; */
 }
+#cube .rightout {
+    transform: perspective(150vw) rotateY(120deg) translateZ(38vw);
+    /* background: rgba(0, 0, 0, 0.85); */
+}
+
 
 #cube .left {
     transform: rotateY(-120deg) translateZ(28vw);
     background: rgba(0, 0, 0, 0.85);
     /* opacity:0.90; */
+}
+#cube .leftout {
+    transform: rotateY(-120deg) translateZ(35vw);
+    /* background: rgba(0, 0, 0, 0.85); */
 }
 
 /* #cube .top {
