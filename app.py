@@ -958,7 +958,7 @@ def tryon_frames():
     cycle_test = total_pics // 8  #測試會有幾個拼貼流程
     remain_test = total_pics % 8 #測試不成套的圖有幾個
     if cycle_test<1:
-        total_w = 2202
+        total_w = 2600
     else:
         if remain_test==0:
             # 加尾數32
