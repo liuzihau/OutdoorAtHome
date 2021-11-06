@@ -107,10 +107,10 @@ def add_product(path):
     for i,file in enumerate(files):
         name = file.split('.')[0]
         if i % 4 == 0:
-            p = Rectangle(start=(300,640),length=(240,360),time = 3,position=f'test-{i}-{name}')
+            p = Rectangle(start=(260,640),length=(240,360),time = 3,position=f'test-{i}-{name}')
             p_list.append(p)
         elif i % 4 == 1:
-            p = Rectangle(start=(400,220),length=(240,360),time = 3,position=f'test-{i}-{name}')
+            p = Rectangle(start=(360,220),length=(240,360),time = 3,position=f'test-{i}-{name}')
             p_list.append(p)
         elif i % 4 == 2:
             p = Rectangle(start=(1000,220),length=(240,360),time = 3,position=f'test-{i}-{name}')
@@ -182,6 +182,7 @@ def tryon2_plot(tryon_type,frame,env_list,w,h,tryon2start):
                     print(real_time)
                     if 0<real_time<0.1:
                         filename = round(tryon2start)
+                        print(frame.shape)
                         cv2.imwrite(f"tryimages/test{filename}.jpg",frame)
                         tryon2start = time.time()
                         print(tryon2start)
@@ -189,7 +190,7 @@ def tryon2_plot(tryon_type,frame,env_list,w,h,tryon2start):
                     if real_time>0.2:
                         env.length=(768,1024)
                         choice = cv2.imread(f'trypose/{env.position}.png',-1)
-                        y1, y2 = h-1025, h-1025 + 1024
+                        y1, y2 = int((h-1024)/2), int((h-1024)/2) + 1024
                         x1, x2 = int(w/2-768/2), int(w/2-768/2) + 768
                         alpha_s = choice[:, :, 3] / 255.0
                         alpha_s = alpha_s * 0.7
@@ -198,9 +199,9 @@ def tryon2_plot(tryon_type,frame,env_list,w,h,tryon2start):
                             frame[y1:y2, x1:x2, c] = (alpha_s * choice[:, :, c] +
                                                     alpha_l * frame[y1:y2, x1:x2, c])
                         font = cv2.FONT_HERSHEY_SIMPLEX
-                        cv2.putText(frame,"Please Stand",(20,70),font,2,(80,127,255),3,cv2.LINE_AA)
-                        cv2.putText(frame,"in shadow",(250,140),font,2,(80,127,255),3,cv2.LINE_AA)
-                        cv2.putText(frame,f"remain: {math.ceil(real_time)}",(1250,70),font,2,(80,127,255),3,cv2.LINE_AA)
+                        cv2.putText(frame,"Please Stand",(90,170),font,2,(80,127,255),3,cv2.LINE_AA)
+                        cv2.putText(frame,"in shadow",(200,240),font,2,(80,127,255),3,cv2.LINE_AA)
+                        cv2.putText(frame,f"remain: {math.ceil(real_time)}",(1150,170),font,2,(80,127,255),3,cv2.LINE_AA)
                     
             else:
                 purge = 1
