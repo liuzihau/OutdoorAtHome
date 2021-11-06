@@ -81,7 +81,7 @@ body {
 }
 
 #cube {
-    transition: transform 1.0s ease-in-out;
+    transition: transform 1.2s ease;
 }
 
 .button-wrap {

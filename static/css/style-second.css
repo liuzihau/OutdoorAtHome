@@ -7,7 +7,7 @@ body {
     height: 100vh;
     position: relative;
     perspective: 2000px;
-    background: black;
+    background: rgb(42, 42, 42);
 }
 
 #cube {
@@ -31,7 +31,7 @@ body {
     height: inherit;
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: 50% 40%;
+    background-position: 50% 35%;
 }
 
 #cube .front {
@@ -40,7 +40,7 @@ body {
     /* opacity:0.90; */
 }
 #cube .frontout {
-    transform: perspective(6000vw) rotateY(0deg) translateZ(90vw);
+    transform: perspective(6000vw) rotateY(0deg) translateZ(91vw);
     /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
@@ -51,7 +51,7 @@ body {
     /* opacity:0.90; */
 }
 #cube .backout {
-    transform: perspective(6000vw) rotateY(180deg) translateZ(90vw);
+    transform: perspective(6000vw) rotateY(180deg) translateZ(91vw);
     /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
@@ -62,7 +62,7 @@ body {
     /* opacity:0.90; */
 }
 #cube .frontsideout {
-    transform: perspective(6000vw) rotateY(120deg) translateZ(90vw);
+    transform: perspective(6000vw) rotateY(120deg) translateZ(91vw);
     /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
@@ -73,7 +73,7 @@ body {
     /* opacity:0.90; */
 }
 #cube .backsideout {
-    transform: perspective(6000vw) rotateY(-120deg) translateZ(90vw);
+    transform: perspective(6000vw) rotateY(-120deg) translateZ(91vw);
     /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
@@ -83,7 +83,7 @@ body {
     /* opacity:0.90; */
 }
 #cube .rightout {
-    transform: perspective(6000vw) rotateY(60deg) translateZ(90vw);
+    transform: perspective(6000vw) rotateY(60deg) translateZ(91vw);
     /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
@@ -94,7 +94,7 @@ body {
     /* opacity:0.90; */
 }
 #cube .leftout {
-    transform: perspective(6000vw) rotateY(-60deg) translateZ(90vw);
+    transform: perspective(6000vw) rotateY(-60deg) translateZ(91vw);
     /* background: rgba(0, 0, 0, 0.85); */
     /* opacity:0.90; */
 }
@@ -115,7 +115,7 @@ body {
 }
 
 #cube {
-    transition: transform 1.2s ease-in-out;
+    transition: transform 1.2s ease;
 }
 
 .button-wrap {
