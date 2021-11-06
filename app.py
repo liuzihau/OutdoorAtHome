@@ -19,6 +19,7 @@ import math
 from virtualtryon.tryon import *
 ##子豪新增部分  穿衣
 from dance_feed import game3_frames
+# from bgadd import *
 
 app=Flask(__name__)
 
@@ -807,7 +808,7 @@ def tryon_frames():
     if args["video_source"] is not None:
         cap = cv2.VideoCapture(args["video_source"])
     else:
-        cap = cv2.VideoCapture(0)  # webcam
+        cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)  # webcam
 
     w = 1600
     h = 1200
@@ -913,17 +914,17 @@ def tryon_frames():
                 
 
             ## render detections (for landmarks)
-            mp_drawing.draw_landmarks(
-                frame,
-                results.pose_landmarks,
-                mp_pose.POSE_CONNECTIONS,
-                mp_drawing.DrawingSpec(color=(255, 255, 255),
-                                    thickness=2,
-                                    circle_radius=2),
-                mp_drawing.DrawingSpec(color=(174, 139, 45),
-                                    thickness=2,
-                                    circle_radius=2),
-            )
+            # mp_drawing.draw_landmarks(
+            #     frame,
+            #     results.pose_landmarks,
+            #     mp_pose.POSE_CONNECTIONS,
+            #     mp_drawing.DrawingSpec(color=(255, 255, 255),
+            #                         thickness=2,
+            #                         circle_radius=2),
+            #     mp_drawing.DrawingSpec(color=(174, 139, 45),
+            #                         thickness=2,
+            #                         circle_radius=2),
+            # )
 
 
             ret, buffer = cv2.imencode('.jpg', frame)
@@ -954,33 +955,70 @@ def tryon_frames():
     final_path ='VITON-HD/results/play'
     final_file = [f"{final_path}/{file}" for file in os.listdir(final_path)]
     total_pics = len(final_file)
-    if math.ceil(total_pics/2)*768<2880:
-        total_w = 2880
+    cycle_test = total_pics // 8  #測試會有幾個拼貼流程
+    remain_test = total_pics % 8 #測試不成套的圖有幾個
+    if cycle_test<1:
+        total_w = 2202
     else:
-        total_w = math.ceil(total_pics/2)*768
-    total_h = 2160
-    final_frame = np.zeros((total_h,total_w,3),dtype=np.uint8)
+        if remain_test==0:
+            # 加尾數32
+            total_w = cycle_test*2202+32
+        elif remain_test < 4:
+            # 加起始32跟前三個拼貼的寬度768再加尾數32
+            total_w = cycle_test*2202+32+768+32
+        elif remain_test < 6:
+            # 追加中間2個拼貼的寬度768再加尾數32
+            total_w = cycle_test*2202+32+768+32+570+32
+        else:
+            # 完整兩塊拼貼版+尾數32
+            total_w = cycle_test*2202+2202+32
+    total_h = 1620
+    final_frame = np.zeros((total_h,total_w,3),dtype=np.uint8)*30
     for i,show in enumerate(final_file):
+        i_cycle_test = (i+1)//8
+        i_remain_test = (i+1)%8
         image = cv2.imread(show)
-        if i % 2 == 0:
-            final_frame[30:1054,(i//2)*768:(i//2)*768+768] = image
-        elif i % 2 ==1:
-            final_frame[1106:2130,(i//2)*768:(i//2)*768+768] = image
+        if i_remain_test % 8 == 1:
+            final_frame[30:1054,(i_cycle_test*2202+32):(32+i_cycle_test*2202)+768] = image
+        elif i_remain_test % 8 == 2:
+            image = cv2.resize(image,(364,486),interpolation=cv2.INTER_AREA)
+            final_frame[(30+1024+50):(30+1024+50)+486,(i_cycle_test*2202+32):(32+i_cycle_test*2202)+364] = image
+        elif i_remain_test % 8 == 3:
+            image = cv2.resize(image,(364,486),interpolation=cv2.INTER_AREA)
+            final_frame[(30+1024+50):(30+1024+50)+486,(i_cycle_test*2202+32+364+40):(32+i_cycle_test*2202+364+40)+364] = image
+        elif i_remain_test % 8 == 4:
+            image = cv2.resize(image,(570,760),interpolation=cv2.INTER_AREA)
+            final_frame[30:30+760,(i_cycle_test*2202+32+768+32):(i_cycle_test*2202+32+768+32)+570] = image
+        elif i_remain_test % 8 == 5:
+            image = cv2.resize(image,(570,760),interpolation=cv2.INTER_AREA)
+            final_frame[(30+760+40):(30+760+40)+760,(i_cycle_test*2202+32+768+32):(i_cycle_test*2202+32+768+32)+570] = image
+        elif i_remain_test % 8 == 6 :
+            final_frame[(30+486+50):(30+486+50)+1024,(i_cycle_test*2202+32+768+32+570+32):(i_cycle_test*2202+32+768+32+570+32)+768] = image
+        elif i_remain_test % 8 == 7 :
+            image = cv2.resize(image,(364,486),interpolation=cv2.INTER_AREA)
+            final_frame[30:(30+486),(i_cycle_test*2202+32+768+32+570+32):(i_cycle_test*2202+32+768+32+570+32)+364] = image
+        elif i_remain_test % 8 == 0 :
+            image = cv2.resize(image,(364,486),interpolation=cv2.INTER_AREA)
+            final_frame[30:(30+486),((i_cycle_test-1)*2202+32+768+32+570+32+364+32):((i_cycle_test-1)*2202+32+768+32+570+32+364+32)+364] = image
+        fn = show.split('/')[-1]
+        os.rename(show,f'history_output\{fn}')
     display_start = time.time() 
     scroll = 80
     end_flag = 0
     end_time = display_start+500
+    outputname = round(time.time())
+    cv2.imwrite(f'history_output\output{outputname}.jpg',final_frame)
     while True:
         now_time = time.time()-display_start
         now_w = int(now_time*scroll)
-        right_w = min(total_w,now_w+2880)
+        right_w = min(total_w,now_w+2600)
         if right_w== total_w:
-            now_w = right_w-2880
+            now_w = right_w-2600
             if end_flag == 0 :
                 end_time = time.time()
                 end_flag = 1
         show_frame = final_frame[:,now_w:right_w]
-        show_frame = cv2.resize(show_frame,(1440,1024),interpolation=cv2.INTER_AREA)
+        show_frame = cv2.resize(show_frame,(1600,1024),interpolation=cv2.INTER_AREA)
         ret, buffer = cv2.imencode('.jpg', show_frame)
         frame = buffer.tobytes()
         # frame = frame.tobytes()

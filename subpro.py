@@ -2,6 +2,7 @@ import os
 from shutil import copyfile
 import subprocess
 import time
+import random
 
 import mediapipe as mp
 import cv2
@@ -93,7 +94,7 @@ def japanese_style_filter(img,output,file_name):
 
 
 # 找出人物位置並置中 調成768*1024
-def pretreat(path,output):
+def pretreat(path,output,bk_input_folder):
     mp_pose = mp.solutions.pose
     # For static images:
     IMAGE_FILES = [f"{path}/{file}"for file in os.listdir(path)]
@@ -146,6 +147,8 @@ def pretreat(path,output):
             # cv2.waitKey(0)
             # cv2.destroyAllWindows()
             japanese_style_filter(image,output,file_name)
+            fn = file.split('/')[-1]
+            os.rename(file,f"history_input/{fn}")
             # cv2.imwrite(f"{output}/{file_name}", image)
 
 #更換背景
@@ -199,6 +202,31 @@ def test_pair(pair_folder,target_folder,txt_name,test_product):
                     f.write(f"{p} {c}")
                 else:
                     f.write(f"{p} {c}"+' \n')
+
+# 更換bg成為一些比較有質感的bg
+def add_bg(images):
+    mp_selfie_segmentation = mp.solutions.selfie_segmentation
+    # Read images with OpenCV.
+    
+    # Show segmentation masks.
+    # BG_COLOR = (192, 192, 192) # gray
+    bg_list = os.listdir('bg/')
+    this_bg = random.choice(bg_list)
+    BG_COLOR = cv2.imread(f'bg/{this_bg}')
+    with mp_selfie_segmentation.SelfieSegmentation() as selfie_segmentation:
+            # Convert the BGR image to RGB and process it with MediaPipe Selfie Segmentation.
+        results = selfie_segmentation.process(cv2.cvtColor(images, cv2.COLOR_BGR2RGB))
+
+        # Generate solid color images for showing the output selfie segmentation mask.
+        fg_image = np.zeros(images.shape, dtype=np.uint8)
+        # fg_image[:] = MASK_COLOR
+        fg_image[:] = images[:]
+        bg_image = np.zeros(images.shape, dtype=np.uint8)
+        bg_image[:] = BG_COLOR
+        condition = np.stack((results.segmentation_mask,) * 3, axis=-1) > 0.2
+        output_image = np.where(condition, fg_image, bg_image)
+        # print(f'Segmentation mask of {name}:')
+        return output_image
 #執行腳本來生出openpose的圖跟JSON以及Human Parsing
 def run_win_cmd(cmd):
     result = []
@@ -217,23 +245,43 @@ def run_win_cmd(cmd):
 if __name__ == '__main__':
     start_time = time.time()
     input_folder = 'tryimages'
+    bk_input_folder = 'history_input'
     resized_folder = 'images_resize'
     final_folder = 'final_imgs'
     test_product = 'product.txt'
     test_folder = 'play'
     test_pairs = 'test_pairsplay.txt'
     output = 'play'
-
-    pretreat(input_folder,resized_folder)
-    print('1')
+    
+    pretreat(input_folder,resized_folder,bk_input_folder)
     change_bg(resized_folder,final_folder)
-    print('2')
     copy_img(final_folder,test_folder)
-    print('6')
     run_win_cmd(f'cd openpose && bin\\OpenPoseDemo.exe --image_dir ..\\{final_folder}\\ --display 0  --disable_blending --write_json ..\\VITON-HD\\datasets\\{test_folder}\\openpose-json --hand --write_images ..\\VITON-HD\\datasets\\{test_folder}\\openpose-img\\')
-    print('7')
     run_win_cmd(f'cd human_parsing && python simple_extractor.py --dataset lip --model-restore checkpoints/final.pth --input-dir ..\\{resized_folder}\\ --output-dir ..\\VITON-HD\\datasets\\{test_folder}\\image-parse\\')
     test_pair('VITON-HD\\datasets',test_folder,test_pairs,test_product)
 
     run_win_cmd(f'cd VITON-HD && python test.py --name {output} --dataset_mode {test_folder} --dataset_list {test_pairs}')
-    print(time.time()-start_time)
+    final_path ='VITON-HD/results/play'
+    final_file = [f"{final_path}/{file}" for file in os.listdir(final_path)]
+    for i,show in enumerate(final_file):
+        image = cv2.imread(show)
+        image = add_bg(image)
+        cv2.imwrite(show,image)
+        
+    for i in os.listdir(resized_folder):
+        os.remove(f"{resized_folder}/{i}")
+    for j in os.listdir(final_folder):
+        os.remove(f"{final_folder}/{j}")
+    VI_IMG = f"VITON-HD/datasets/{test_folder}/image"
+    for k in os.listdir(VI_IMG):
+        os.remove(f"{VI_IMG}/{k}")
+    VI_PAR = f"VITON-HD/datasets/{test_folder}/image-parse"
+    for l in os.listdir(VI_PAR):
+        os.remove(f"{VI_PAR}/{l}")
+    VI_OPEN_IMG = f"VITON-HD/datasets/{test_folder}/openpose-img"
+    for m in os.listdir(VI_OPEN_IMG):
+        os.remove(f"{VI_OPEN_IMG}/{m}")
+    VI_OPEN_JSON = f"VITON-HD/datasets/{test_folder}/openpose-json"
+    for n in os.listdir(VI_OPEN_JSON):
+        os.remove(f"{VI_OPEN_JSON}/{n}")
+
