@@ -12,6 +12,7 @@
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/htmleaf-demo.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/fitness.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='animate/animate.css') }}">
 </head>
 
 <body>
@@ -25,9 +26,11 @@
                 <!-- <div class="row"> -->
                 <div id='video' class="col-xl-10 col-lg-10 col-md-10"
                     style="background-image:url({{ url_for('fitness_feed', exercise_type=exercise_type) }});">
-
+                    <!-- 教練指導 -->
+                    <video id='trainer' class="col-12 float-right wow bounceInRight animated" data-wow-duration="1.5s" autoplay controls src="">
+                    </video>
                     <!-- 接結束畫面 -->
-                    <p id='finish_text' class='h2 mt-3 col-12'></p>
+                    <p id='finish_text' class='h2 mt-3 col-12' style="display: none;"></p>
                     <img id="control" src="" width="0%">
 
                     <!-- <img class="img-fluid rounded" src="{{ url_for('fitness_feed', exercise_type=exercise_type) }}" width="100%"> -->
@@ -83,13 +86,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='animate/wow.js') }}"></script>
+        
     <script>
+        new WOW().init();
         let workout_type = document.getElementById("workout_type");
         let count = document.getElementById("count");
         let hint = document.getElementById("hint");
         let video_frame = document.getElementById("video");
         let finish_text = document.getElementById("finish_text");
         let control = document.getElementById("control");
+        let trainer = document.getElementById("trainer");
         var up_count = 0;
         var down_count = 0;
 
@@ -98,29 +105,55 @@
             fetch("{{ url_for('status_feed') }}")
                 .then(response => {
                     response.text().then(t => {
-                        count.innerHTML = t.split(",")[2];
-                        hint.innerHTML = t.split(",")[4];
-                        if (t.split(",")[1] === 'squat') {
-                            workout_type.innerHTML = '深蹲';
-                        }
-                        else if (t.split(",")[1] === 'bicycle') {
-                            workout_type.innerHTML = '單車式卷腹';
-                        }
-                        else if (t.split(",")[1] === 'side_lateral_raise') {
-                            workout_type.innerHTML = '啞鈴側平舉';
-                        }
-                        else if (t.split(",")[1] === 'hip_thrust') {
-                            workout_type.innerHTML = '啞鈴臀推';
-                        }
-                        else if (t.split(",")[1] === 'dumbbell_bench_press') {
-                            workout_type.innerHTML = '啞鈴胸推';
-                        }
-                        else if (t.split(",")[1] === 'bent_over_row') {
-                            workout_type.innerHTML = '啞鈴俯身划船';
+                        if (typeof t.split(",")[2] !== "undefined") {
+                            count.innerHTML = t.split(",")[2];
+                            hint.innerHTML = t.split(",")[4];
+
+                            if (t.split(",")[1] === 'squat') {
+                                workout_type.innerHTML = '深蹲';
+                            }
+                            else if (t.split(",")[1] === 'bicycle') {
+                                workout_type.innerHTML = '單車式卷腹';
+                            }
+                            else if (t.split(",")[1] === 'side_lateral_raise') {
+                                workout_type.innerHTML = '啞鈴側平舉';
+                            }
+                            else if (t.split(",")[1] === 'hip_thrust') {
+                                workout_type.innerHTML = '啞鈴臀推';
+                            }
+                            else if (t.split(",")[1] === 'dumbbell_bench_press') {
+                                workout_type.innerHTML = '啞鈴胸推';
+                            }
+                            else if (t.split(",")[1] === 'bent_over_row') {
+                                workout_type.innerHTML = '啞鈴俯身划船';
+                            }
                         }
                     });
                 });
         }, 1000);
+
+        // 教練影片區塊
+        trainer.onended = ()=>{trainer.setAttribute("style", "display: none")}
+        let loc = location.href
+
+        if (typeof loc !== "undefined" && loc.indexOf("/squat") > -1){
+            trainer.setAttribute("src","{{ url_for('static', filename='img/squat.mp4') }}")
+        }
+        if (typeof loc !== "undefined" && loc.indexOf("/bicycle") > -1){
+            trainer.setAttribute("src","{{ url_for('static', filename='img/bicycle.mp4') }}")
+        }
+        if (typeof loc !== "undefined" && loc.indexOf("/side_lateral_raise") > -1){
+            trainer.setAttribute("src","{{ url_for('static', filename='img/side_lateral_raise.mp4') }}")
+        }
+        if (typeof loc !== "undefined" && loc.indexOf("/hip_thrust") > -1){
+            trainer.setAttribute("src","{{ url_for('static', filename='img/hip_thrust.mp4') }}")
+        }
+        if (typeof loc !== "undefined" && loc.indexOf("/dumbbell_bench_press") > -1){
+            trainer.setAttribute("src","{{ url_for('static', filename='img/dumbbell_bench_press.mp4') }}")
+        }
+        if (typeof loc !== "undefined" && loc.indexOf("/bent_over_row") > -1){
+            trainer.setAttribute("src","{{ url_for('static', filename='img/bent_over_row.mp4') }}")
+        }
 
         // 結束頁面
         setInterval(() => {
@@ -129,12 +162,15 @@
                     response.text().then(t => {
                         if (t.split(",")[0] === "False") {
                             video_frame.setAttribute("style", "background-image: url({{ url_for('static', filename='img/exercise.jpg') }});");
+                            finish_text.setAttribute("style", "display: block;")
                             finish_text.innerHTML = `恭喜你完成了<br> ${count.textContent}次${workout_type.textContent}<br><br>舉高左手退出運動 | 舉高右手再做一次`;
-                            control.setAttribute("src", "{{ url_for('video_feed') }}")
+                            control.setAttribute("src", "{{ url_for('video_feed') }}");
+                            clearInterval(this);
+                            return
                         }
                     })
                 });
-        }, 1000);
+        }, 50);
 
         // 重來
         $("body").on("keydown", function (ev) {
