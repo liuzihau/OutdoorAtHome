@@ -164,19 +164,99 @@ def game3_frames(game_type='game3'):
     #定義show圖位置
     def Move(frame,move):
 
-        if move == 'clap':
+        if move == 'mickey':
+            
+            mickey = cv2.imread("images/mickey.png",-1)
+
+            # 加alpha的方法#s前#l後
+            alpha_s = mickey[:, :, 3] / 255.0
+            alpha_l = 1.0 - alpha_s
+            for c in range(0, 3):
+                        frame[:, :, c] = (alpha_s * mickey[:, :, c] +
+                                                alpha_l * frame[:, :, c])
+            mickey = cv2.resize( mickey, (1600, 960),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)
+            mickey = cv2.addWeighted(mickey,0.5,frame,1,0) 
+            img_height, img_width, _ = mickey.shape                           
+            mickey_gray = cv2.cvtColor(mickey, cv2.COLOR_BGR2GRAY)            
+            _, mickey_mask = cv2.threshold(mickey_gray, 25, 255, cv2.THRESH_BINARY_INV)
+            x, y = int(800-img_width/2), int(480-img_height/2)#xy是圖的左上角 #800*480              
+            mickey_area = frame[y: y+img_height, x: x+img_width]            
+            mickey_area_no_mickey = cv2.bitwise_and(mickey_area, mickey_area, mask=mickey_mask)            
+            final_mickey = cv2.add(mickey_area_no_mickey, mickey)            
+            frame[y: y+img_height, x: x+img_width] = final_mickey
+
+        elif move == 'mm3':            
+            mickey = cv2.imread("images/mm3.png",-1)
+
+            # 加alpha的方法#s前#l後
+            alpha_s = mickey[:, :, 3] / 255.0
+            alpha_l = 1.0 - alpha_s
+            for c in range(0, 3):
+                        frame[:, :, c] = (alpha_s * mickey[:, :, c] +
+                                                alpha_l * frame[:, :, c])
+            mickey = cv2.resize( mickey, (1600, 960),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)
+            mickey = cv2.addWeighted(mickey,0.5,frame,1,0) 
+            img_height, img_width, _ = mickey.shape                           
+            mickey_gray = cv2.cvtColor(mickey, cv2.COLOR_BGR2GRAY)            
+            _, mickey_mask = cv2.threshold(mickey_gray, 25, 255, cv2.THRESH_BINARY_INV)
+            x, y = int(800-img_width/2), int(480-img_height/2)#xy是圖的左上角 #800*480              
+            mickey_area = frame[y: y+img_height, x: x+img_width]            
+            mickey_area_no_mickey = cv2.bitwise_and(mickey_area, mickey_area, mask=mickey_mask)            
+            final_mickey = cv2.add(mickey_area_no_mickey, mickey)            
+            frame[y: y+img_height, x: x+img_width] = final_mickey
+        
+        elif move == 'mm2':            
+            mickey = cv2.imread("images/mm2.png",-1)
+
+            # 加alpha的方法#s前#l後
+            alpha_s = mickey[:, :, 3] / 255.0
+            alpha_l = 1.0 - alpha_s
+            for c in range(0, 3):
+                        frame[:, :, c] = (alpha_s * mickey[:, :, c] +
+                                                alpha_l * frame[:, :, c])
+            mickey = cv2.resize( mickey, (1600, 960),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)
+            mickey = cv2.addWeighted(mickey,0.5,frame,1,0) 
+            img_height, img_width, _ = mickey.shape                           
+            mickey_gray = cv2.cvtColor(mickey, cv2.COLOR_BGR2GRAY)            
+            _, mickey_mask = cv2.threshold(mickey_gray, 25, 255, cv2.THRESH_BINARY_INV)
+            x, y = int(800-img_width/2), int(480-img_height/2)#xy是圖的左上角 #800*480              
+            mickey_area = frame[y: y+img_height, x: x+img_width]            
+            mickey_area_no_mickey = cv2.bitwise_and(mickey_area, mickey_area, mask=mickey_mask)            
+            final_mickey = cv2.add(mickey_area_no_mickey, mickey)            
+            frame[y: y+img_height, x: x+img_width] = final_mickey
+
+        elif move == 'mm1':            
+            mickey = cv2.imread("images/mm1.png",-1)
+
+            # 加alpha的方法#s前#l後
+            alpha_s = mickey[:, :, 3] / 255.0
+            alpha_l = 1.0 - alpha_s
+            for c in range(0, 3):
+                        frame[:, :, c] = (alpha_s * mickey[:, :, c] +
+                                                alpha_l * frame[:, :, c])
+            mickey = cv2.resize( mickey, (1600, 960),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)
+            mickey = cv2.addWeighted(mickey,0.5,frame,1,0) 
+            img_height, img_width, _ = mickey.shape                           
+            mickey_gray = cv2.cvtColor(mickey, cv2.COLOR_BGR2GRAY)            
+            _, mickey_mask = cv2.threshold(mickey_gray, 25, 255, cv2.THRESH_BINARY_INV)
+            x, y = int(800-img_width/2), int(480-img_height/2)#xy是圖的左上角 #800*480              
+            mickey_area = frame[y: y+img_height, x: x+img_width]            
+            mickey_area_no_mickey = cv2.bitwise_and(mickey_area, mickey_area, mask=mickey_mask)            
+            final_mickey = cv2.add(mickey_area_no_mickey, mickey)            
+            frame[y: y+img_height, x: x+img_width] = final_mickey
+
+        elif move == 'clap':
             clap = cv2.imread("images/clap111.png")
             clap = cv2.resize( clap, (250, 250),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)
             img_height, img_width, _ = clap.shape                           
             clap_gray = cv2.cvtColor(clap, cv2.COLOR_BGR2GRAY)            
             _, clap_mask = cv2.threshold(clap_gray, 25, 255, cv2.THRESH_BINARY_INV)
-            x, y = int(x_clap_pos-img_width/2), int(y_clap_pos-img_height/2)#xy是圖的左上角 #800*330               
+            x, y = int(x_clap_pos-img_width/2), int(y_clap_pos-img_height/2)               
             clap_area = frame[y: y+img_height, x: x+img_width]            
             clap_area_no_clap = cv2.bitwise_and(clap_area, clap_area, mask=clap_mask)            
             final_clap = cv2.add(clap_area_no_clap, clap)            
             frame[y: y+img_height, x: x+img_width] = final_clap
-            print("clap")
-            return frame
+            print("clap")            
 
         elif move == 'lh_and_ra':
             clap = cv2.imread("images/handankle.png")        
@@ -618,12 +698,21 @@ def game3_frames(game_type='game3'):
                 print(mstimer(start_time))
 
                 status=False
-                if 4.862+delay < mstimer(start_time) < 5.462+delay:
-                    cv2.putText(frame, "3", (1400, 150),cv2.FONT_HERSHEY_SIMPLEX, 5, (0, 170, 255), 20, cv2.LINE_AA)
+
+                if 0.0+delay < mstimer(start_time) < 4.861+delay:
+                    Move(frame,"mickey")    
+                elif 4.862+delay < mstimer(start_time) < 5.462+delay:
+                    Move(frame,"mm3")
+                elif 5.463+delay < mstimer(start_time) < 5.719+delay:
+                    Move(frame,"mickey") 
                 elif 5.720+delay < mstimer(start_time) < 6.320+delay:
-                    cv2.putText(frame, "2", (1400, 150),cv2.FONT_HERSHEY_SIMPLEX, 5, (0, 170, 255), 20, cv2.LINE_AA)
+                    Move(frame,"mm2")
+                elif 6.321+delay < mstimer(start_time) < 6.577+delay:
+                    Move(frame,"mickey") 
                 elif 6.578+delay < mstimer(start_time) < 7.178+delay:
-                    cv2.putText(frame, "1", (1400, 150),cv2.FONT_HERSHEY_SIMPLEX, 5, (0, 170, 255), 20, cv2.LINE_AA)
+                    Move(frame,"mm1")
+                elif 7.719+delay < mstimer(start_time) < 7.435+delay:
+                    Move(frame,"mickey") 
                 elif 7.436+delay < mstimer(start_time) < 8.036+delay:
                     Move(frame,"clap")
                     counter, status, move = TypeOfDance(landmarks).hand_clap(counter, status,"clap")                
@@ -956,6 +1045,23 @@ def game3_frames(game_type='game3'):
                 # print(f'distance_of_lh_and_ra_position: {distance_of_lh_and_ra_position}')
 
                 #-----------------------------------------------------------------------------------------------
+                # mickey = cv2.imread("images/mickey.png")
+                # mickey = cv2.resize( mickey, (1600, 960),0,fx=1,fy=1,interpolation=cv2.INTER_AREA)
+                # mickey = cv2.addWeighted(mickey,0.5,frame,0.5,1) 
+                # img_height, img_width, _ = mickey.shape                           
+                # mickey_gray = cv2.cvtColor(mickey, cv2.COLOR_BGR2GRAY)            
+                # _, mickey_mask = cv2.threshold(mickey_gray, 25, 255, cv2.THRESH_BINARY_INV)
+                # x, y = int(800-img_width/2), int(480-img_height/2)#xy是圖的左上角 #800*480              
+                # mickey_area = frame[y: y+img_height, x: x+img_width]            
+                # mickey_area_no_mickey = cv2.bitwise_and(mickey_area, mickey_area, mask=mickey_mask)            
+                # final_mickey = cv2.add(mickey_area_no_mickey, mickey)            
+                # frame[y: y+img_height, x: x+img_width] = final_mickey
+                
+                
+                
+                
+                
+                
                 cv2.putText(frame, str(f'{x_LEFT_INDEX},{y_LEFT_INDEX}'), (x_LEFT_INDEX+20, y_LEFT_INDEX+20),cv2.FONT_HERSHEY_PLAIN, 2, (150, 150, 235), 2)
                 #print(f'LEFT_INDEX[{x_LEFT_INDEX},{y_LEFT_INDEX}]')            
                 cv2.putText(frame, str(f'{x_RIGHT_INDEX},{y_RIGHT_INDEX}'), (x_RIGHT_INDEX+20, y_RIGHT_INDEX+20),cv2.FONT_HERSHEY_PLAIN, 2, (150, 150, 235), 2)            
@@ -969,27 +1075,28 @@ def game3_frames(game_type='game3'):
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)            
                 cv2.putText(frame, "Time : " + str(timer(start_time)), (10, 200),
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)
-                cv2.line(frame,(0,125),(1600,125),(150,150,150),3)
-                cv2.line(frame,(0,150),(1600,150),(150,150,150),3)
-                cv2.line(frame,(0,420),(1600,420),(150,150,150),3)
-                cv2.line(frame,(0,690),(1600,690),(150,150,150),3)
-                cv2.line(frame,(900,0),(900,960),(150,150,150),3)
-                cv2.line(frame,(700,0),(700,960),(150,150,150),3)
+                
+                # cv2.line(frame,(0,125),(1600,125),(150,150,150),3)
+                # cv2.line(frame,(0,150),(1600,150),(150,150,150),3)
+                # cv2.line(frame,(0,420),(1600,420),(150,150,150),3)
+                # cv2.line(frame,(0,690),(1600,690),(150,150,150),3)
+                # cv2.line(frame,(900,0),(900,960),(150,150,150),3)
+                # cv2.line(frame,(700,0),(700,960),(150,150,150),3)
 
-                cv2.circle(frame,(810,610),100,(150,150,150), 3)
-                cv2.circle(frame,(790,610),100,(150,150,150), 3)
+                # cv2.circle(frame,(810,610),100,(150,150,150), 3)
+                # cv2.circle(frame,(790,610),100,(150,150,150), 3)
 
-                cv2.circle(frame,(900,620),100,(150,150,150), 3)
-                cv2.circle(frame,(700,620),100,(150,150,150), 3)
+                # cv2.circle(frame,(900,620),100,(150,150,150), 3)
+                # cv2.circle(frame,(700,620),100,(150,150,150), 3)
 
-                cv2.circle(frame,(1070,590),100,(150,150,150), 3)
-                cv2.circle(frame,(530,590),100,(150,150,150), 3)
+                # cv2.circle(frame,(1070,590),100,(150,150,150), 3)
+                # cv2.circle(frame,(530,590),100,(150,150,150), 3)
 
-                cv2.circle(frame,(1110,400),100,(150,150,150), 3)
-                cv2.circle(frame,(490,400),100,(150,150,150), 3)
+                # cv2.circle(frame,(1110,400),100,(150,150,150), 3)
+                # cv2.circle(frame,(490,400),100,(150,150,150), 3)
 
-                cv2.circle(frame,(1100,220),100,(150,150,150), 3)
-                cv2.circle(frame,(500,220),100,(150,150,150), 3)
+                # cv2.circle(frame,(1100,220),100,(150,150,150), 3)
+                # cv2.circle(frame,(500,220),100,(150,150,150), 3)
 
                 #print(222)
             except:
