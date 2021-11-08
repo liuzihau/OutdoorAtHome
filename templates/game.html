@@ -104,6 +104,7 @@
             fetch("{{ url_for('game_status_feed') }}")
                 .then(response => {
                     response.text().then(t => {
+                        if (typeof t.split(",")[2] !== "undefined"){
                         time.innerHTML = t.split(",")[3];
                         if (t.split(",")[1] === 'game1') {
                             game_type.innerHTML = '大宇宙無敵熱血激烈拳擊';
@@ -117,7 +118,7 @@
                             game_type.innerHTML = 'Hand Clap Dance';
                             count.innerHTML = t.split(",")[2]
                         };
-                    })
+                    }})
                 });
         }, 1000);
 
