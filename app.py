@@ -159,33 +159,33 @@ def fitness_frames(exercise_type):
     switch=True
     soundon = 0
     flag = 0 
-    mp3=f"sounds/{exercise_type}.mp3"
-    pygame.mixer.init()
-    pygame.mixer.music.load(mp3)
+    # mp3=f"sounds/{exercise_type}.mp3"
+    # pygame.mixer.init()
+    # pygame.mixer.music.load(mp3)
     
-    while cap.isOpened():
+    # while cap.isOpened():
         
-        #print(exercise_type)
+    #     #print(exercise_type)
                
-        if soundon == 0 :
-            pygame.mixer.music.play()            
-            soundon = 1
-        try:
-            ret, frame = cap.read() 
-            frame = cv2.resize(frame, (1600, 960), interpolation=cv2.INTER_AREA)
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-                # frame = frame.tobytes()            
-            # 文字資訊寫入txt檔
+    #     if soundon == 0 :
+    #         pygame.mixer.music.play()            
+    #         soundon = 1
+    #     try:
+    #         ret, frame = cap.read() 
+    #         frame = cv2.resize(frame, (1600, 960), interpolation=cv2.INTER_AREA)
+    #         ret, buffer = cv2.imencode('.jpg', frame)
+    #         frame = buffer.tobytes()
+    #             # frame = frame.tobytes()            
+    #         # 文字資訊寫入txt檔
                 
-            # 網頁生成webcam影像
-            cv2.waitKey(1) #<--從25改1,比較順
-            with open('fitness.txt','w+') as f:
-                f.write(f"{switch},{exercise_type},{counter},{status},{hint}"+'\n')
-            yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        except:
-            break  
+    #         # 網頁生成webcam影像
+    #         cv2.waitKey(1) #<--從25改1,比較順
+    #         with open('fitness.txt','w+') as f:
+    #             f.write(f"{switch},{exercise_type},{counter},{status},{hint}"+'\n')
+    #         yield (b'--frame\r\n'
+    #             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    #     except:
+    #         break  
 
     cap = cv2.VideoCapture(0)
     ## setup mediapipe
