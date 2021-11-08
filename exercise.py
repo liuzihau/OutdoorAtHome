@@ -100,17 +100,18 @@ class TypeOfExercise(BodyPartAngle):
         # 左右各做一下才算數
         if status:
             if length_relb_lknee < 0.15:
-                    counter += 0.5
+                    counter += 1
                     status = False
             elif length_lelb_rknee < 0.15:
-                    counter += 0.5
+                    counter += 1
                     status = False
         else:
                 if length_relb_lknee >= 0.15 and length_lelb_rknee >= 0.15:
                     status = True
         if hint:
             if length_relb_lknee >= 0.15 or length_lelb_rknee >= 0.15:
-                #hint= "Relax your neck muscles and tighten your core"
+                #hint= "Relax your neck mu
+                # scles and tighten your core"
                 hint= "頸椎放鬆，收緊核心"
             elif neck_angle > 90:
                 #hint= "Avoid forces your neck muscles to bend forward"
