@@ -1062,19 +1062,19 @@ def game3_frames(game_type='game3'):
                 
                 
                 
-                cv2.putText(frame, str(f'{x_LEFT_INDEX},{y_LEFT_INDEX}'), (x_LEFT_INDEX+20, y_LEFT_INDEX+20),cv2.FONT_HERSHEY_PLAIN, 2, (150, 150, 235), 2)
-                #print(f'LEFT_INDEX[{x_LEFT_INDEX},{y_LEFT_INDEX}]')            
-                cv2.putText(frame, str(f'{x_RIGHT_INDEX},{y_RIGHT_INDEX}'), (x_RIGHT_INDEX+20, y_RIGHT_INDEX+20),cv2.FONT_HERSHEY_PLAIN, 2, (150, 150, 235), 2)            
+                # cv2.putText(frame, str(f'{x_LEFT_INDEX},{y_LEFT_INDEX}'), (x_LEFT_INDEX+20, y_LEFT_INDEX+20),cv2.FONT_HERSHEY_PLAIN, 2, (150, 150, 235), 2)
+                # #print(f'LEFT_INDEX[{x_LEFT_INDEX},{y_LEFT_INDEX}]')            
+                # cv2.putText(frame, str(f'{x_RIGHT_INDEX},{y_RIGHT_INDEX}'), (x_RIGHT_INDEX+20, y_RIGHT_INDEX+20),cv2.FONT_HERSHEY_PLAIN, 2, (150, 150, 235), 2)            
 
 
-                cv2.putText(frame, "Move : " + str(move), (10, 50),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)             
-                cv2.putText(frame, "Counter : " + str(int(counter)), (10, 100),
-                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)             
-                cv2.putText(frame, "Status : " + str(status), (10, 150),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)            
-                cv2.putText(frame, "Time : " + str(timer(start_time)), (10, 200),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)
+                # cv2.putText(frame, "Move : " + str(move), (10, 50),
+                #         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)             
+                # cv2.putText(frame, "Counter : " + str(int(counter)), (10, 100),
+                #          cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)             
+                # cv2.putText(frame, "Status : " + str(status), (10, 150),
+                #             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)            
+                # cv2.putText(frame, "Time : " + str(timer(start_time)), (10, 200),
+                #             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 170, 255), 2, cv2.LINE_AA)
                 
                 # cv2.line(frame,(0,125),(1600,125),(150,150,150),3)
                 # cv2.line(frame,(0,150),(1600,150),(150,150,150),3)
