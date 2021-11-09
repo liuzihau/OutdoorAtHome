@@ -7,9 +7,11 @@ import pygame
 from body_part_angle import BodyPartAngle
 import flask
 
-def game3_frames(game_type='game3'):
+def game3_frames(app,db,game_type='game3'):
     game_status=0
-
+    with open('login.txt','r') as f: 
+        uid = f.read()
+    sql_write = 0
     def mstimer(start_time):
         time_diff = time.time()-start_time
         HR = int(str(int(time_diff // 3600 // 10 )) + str(int(time_diff // 3600 % 10)))
@@ -1116,6 +1118,11 @@ def game3_frames(game_type='game3'):
             # 文字資訊寫入txt檔
             with open('game.txt','w+') as f:
                 f.write(f"{game_status},{game_type},{counter},{timer(start_time)},{soundon}"+'\n')
+                if sql_write == 0 and game_status==1:
+                    with app.test_request_context():
+                        sql = f"INSERT INTO gamescore(uid,gaid,gacount,gatime) VALUES ({uid},3,{int(round(counter))},64)"
+                        db.engine.execute(sql)
+                        sql_write = 1
             # 生成二進為圖檔    
             yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 

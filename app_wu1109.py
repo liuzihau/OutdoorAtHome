@@ -19,19 +19,11 @@ import math
 from virtualtryon.tryon import *
 ##子豪新增部分  穿衣
 from dance_feed import game3_frames
-###子豪11/8新增部分 資料庫
-from flask_sqlalchemy import SQLAlchemy
+# from bgadd import *
 
 app=Flask(__name__)
 
 app.config['SECRET_KEY'] = '12345'  # 設定session加密的金鑰
-
-## 子豪11/8新增====資料庫設定====
-db = SQLAlchemy()
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# mysql格式，pymysql套件，資料庫使用者名稱，密碼，@網址，port，資料表
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://howhow:password@ec2-54-179-42-92.ap-southeast-1.compute.amazonaws.com:3306/project"
-db.init_app(app)
 
 #ap = argparse.ArgumentParser()
 #ap.add_argument("-t",
@@ -150,11 +142,6 @@ def control_frames():
 
 ## 健身影像
 def fitness_frames(exercise_type):  
-    with open('login.txt','r') as f: 
-        uid = f.read()
-    sql_write = 0
-    
-    ex_dict = {'squat':1,'bicycle':2,'side_lateral_raise':3,'hip_thrust':4,'dumbbell_bench_press':5,'bent_over_row':6}
     if args["video_source"] is not None:
         cap = cv2.VideoCapture(args["video_source"])
     else:
@@ -296,11 +283,6 @@ def fitness_frames(exercise_type):
 
             with open('fitness.txt','w+') as f:
                 f.write(f"{switch},{exercise_type},{counter},{status},{hint},{end_time}"+'\n')
-                if sql_write == 0 and switch==False:
-                    with app.test_request_context():
-                        sql = f"INSERT INTO exercisescore(uid,excid,excount,extime) VALUES ({uid},{ex_dict[exercise_type]},{int(round(counter))},{end_time})"
-                        db.engine.execute(sql)
-                        sql_write = 1
                 #print(end_time)
     # 網頁生成webcam影像
             yield (b'--frame\r\n'
@@ -309,13 +291,6 @@ def fitness_frames(exercise_type):
 
 ## 拳擊遊戲game1影像
 def games_frames(game_type='game1'):
-    # 用筆記本叫出uid
-    with open('login.txt','r') as f: 
-        uid = f.read()
-    sql_write = 0
-    def timer1(start_time):
-        time_diff = time.time()-start_time
-        return time_diff
     if args["video_source"] is not None:
         cap = cv2.VideoCapture(args["video_source"])
     else:
@@ -544,11 +519,6 @@ def games_frames(game_type='game1'):
             # 文字資訊寫入txt檔
             with open('game.txt','w+') as f:
                 f.write(f"{game_status},{game_type},{counter},{timer(start_time)}"+'\n')
-                if sql_write == 0 and game_status==1:
-                    with app.test_request_context():
-                        sql = f"INSERT INTO gamescore(uid,gaid,gacount,gatime) VALUES ({uid},1,{int(round(counter))},55)"
-                        db.engine.execute(sql)
-                        sql_write = 1
             # 生成二進為圖檔    
             yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
@@ -556,10 +526,6 @@ def games_frames(game_type='game1'):
 
 ## 一二三我姑媽game2影像
 def game2_frames(game_type='game2'):
-    # 用筆記本叫出uid
-    with open('login.txt','r') as f: 
-        uid = f.read()
-    sql_write = 0
     def timer1(start_time):
         time_diff = time.time()-start_time
         return time_diff
@@ -583,7 +549,7 @@ def game2_frames(game_type='game2'):
     hard = 21
     time_list = [8*g+x for g,x in enumerate(sorted(random.sample(range(4,70),20)))]
     print(time_list)
-    over_time = time.time()
+
     final_frame = np.ones((800,1320,3),dtype =np.uint8)*60
     print(final_frame.shape)
     cap = cv2.VideoCapture(0)
@@ -803,11 +769,7 @@ def game2_frames(game_type='game2'):
             # game_status: 0=START, 1=LOSE, 2=WIN 
             with open('game.txt','w+') as f:
                 f.write(f"{game_status},{game_type},{int(round(counter))},{timer(start_time)},{total_use_time}"+'\n')
-                if sql_write == 0 and game_status==2:
-                    with app.test_request_context():
-                        sql = f"INSERT INTO gamescore(uid, gaid,gacount,gatime) VALUES ({uid},2,{int(round(counter))},{int(end_time-start_time)})"
-                        db.engine.execute(sql)
-                        sql_write = 1
+
 
             yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
@@ -832,16 +794,6 @@ def run_win_cmd(cmd):
 
 ##子豪新增部分  跑穿衣的影像
 def tryon_frames():
-    # 用筆記本叫出uid
-    with open('login.txt','r') as f: 
-        uid = f.read()
-    # 先搜尋分類圖對應的sid做成字典
-    with app.app_context():
-        sql = """
-                select sid,img from produce
-                """
-        try_pairs = db.engine.execute(sql).fetchall()
-    try_dict = {f"{try_pair[1].split('.')[0]}.jpg":try_pair[0] for try_pair in try_pairs}
     ## music setting (if needed)
     file = f"sounds/fashion.mp3"
     pygame.mixer.init()
@@ -849,14 +801,14 @@ def tryon_frames():
     soundon = 0
 
     # ## drawing body
-    # mp_drawing = mp.solutions.drawing_utils
+    mp_drawing = mp.solutions.drawing_utils
     mp_pose = mp.solutions.pose
 
     ## setting the video source
     if args["video_source"] is not None:
         cap = cv2.VideoCapture(args["video_source"])
     else:
-        cap = cv2.VideoCapture(0)  # webcam
+        cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)  # webcam
 
     w = 1600
     h = 1200
@@ -868,9 +820,6 @@ def tryon_frames():
     counter = 0 # movement of exercise
     tryon_status = 1
     page = 0
-    
-
-    
     ## setup mediapipe
     with mp_pose.Pose(min_detection_confidence=0.8,
                     min_tracking_confidence=0.8) as pose:
@@ -1080,14 +1029,8 @@ def tryon_frames():
                     if obj.choice:
                         filename = obj.position.split('-')[-1]
                         test_product.append(f"{filename}.jpg")
-                        sid = try_dict[f"{filename}.jpg"]
-                        # 新增資料上資料庫
-                        with app.test_request_context():
-                            sql = f"INSERT INTO producewear(uid, sid) VALUES ({uid}, {sid})"
-                            db.engine.execute(sql)
                 pro_str = ','.join(test_product)
                 f.write(f"False,{pro_str}")
-                break
             else:
                 f.write(f"True")
 
@@ -1101,27 +1044,28 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=8)
 ## 登入畫面
 @app.route('/login', methods=['GET', 'POST'])  # 支援get、post請求
 def login():
-    # email : Amelia01@gg.net
-    # password : $2a$08$YAbPxLZnbrYFWAEdSwtypem9UrM.8Vk6BUZHqjrTU76hLUzvD65TW
-    # 原生mysql語法
-    sql = """
-    select email,password,nickname,uid from account
-    """ 
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']   #.encode('utf-8')
-        user_pairs = db.engine.execute(sql).fetchall() # 從資料庫輸入上面sql語法抓取資料
-        for user_pair in user_pairs:
-            if ((user_pair[0] == email) and (user_pair[1] == password)):
-                session['name'] = user_pair[2]
-                session['uid'] = user_pair[3]
-                session['email'] = email
-                with open('login.txt','w+') as f:
-                    f.write(f"{session['uid']}")
-                return render_template("index_3D.html")     
-        # return "您的密碼錯誤"
-        flash('您的密碼錯誤或無此使用者')
-        return render_template("login.html")
+        if email == "abc@gmail.com":
+            user = "user"
+            if user == None :
+                # return "沒有這個帳號"
+                flash('沒有這個帳號')
+                return render_template("login.html")
+            if len(user) != 0:
+                if password == '12345':
+                    session['name'] = 'abc'  
+                    session['email'] = 'abc@gmail.com'
+                    return render_template("index_3D.html")
+                else:
+                    # return "您的密碼錯誤"
+                    flash('您的密碼錯誤')
+                    return render_template("login.html")
+        # 以下暫時寫的
+        else:
+            flash('沒有這個帳號')
+            return render_template("login.html")
     else:
         return render_template("login.html")
 
@@ -1133,12 +1077,12 @@ def index():
     pygame.mixer.init()
     pygame.mixer.music.stop()
     # session['name'] = False
-    # 取session
-    print(session.get('uid'))
-    if session.get('email') == None:
-        return redirect('/login')
-    else:
+    username = session.get('name')  # 取session
+
+    if username == "abc":
         return render_template('index_3D.html')
+    else:
+        return redirect('/login')
 
     #return render_template('index.html')
 
@@ -1203,7 +1147,7 @@ def games_feed(game_type):
     elif game_type=="game3":
         pygame.mixer.init()
         pygame.mixer.music.stop()
-        return Response(game3_frames(app,db,game_type), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(game3_frames(game_type), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 ## 子豪新增部分  穿衣頁面影像
