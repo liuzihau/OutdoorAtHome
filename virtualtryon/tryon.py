@@ -163,7 +163,7 @@ def tryon_plot(tryon_type,frame,env_coordinate,path=None):
                     cv2.rectangle(frame,(int(env[1][0]),int(env[1][1])),(int(env[1][0]+env[2][0]),int(env[1][1]+env[2][1])),(60,90,200),3)
                     if env[5]:
                         font = cv2.FONT_HERSHEY_SIMPLEX
-                        cv2.putText(frame,"Choosed!",(int(env[1][0]),int(env[1][1]-8)),font,1,(80,127,255),3,cv2.LINE_AA)
+                        cv2.putText(frame,"Chose!",(int(env[1][0]),int(env[1][1]-8)),font,1,(80,127,255),3,cv2.LINE_AA)
                 elif env[4] in ['ok','reset','next','prev']:
                     if env[6]>0:
                         cv2.circle(frame,(int(env[1][0]+0.5* env[2][0]),int(env[1][1]+0.5*env[2][1])),int(180-8*env[6]),(150,150,250),4)
