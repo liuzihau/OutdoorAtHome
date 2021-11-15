@@ -1101,8 +1101,8 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=8)
 ## 登入畫面
 @app.route('/login', methods=['GET', 'POST'])  # 支援get、post請求
 def login():
-    # email : Amelia01@gg.net
-    # password : $2a$08$YAbPxLZnbrYFWAEdSwtypem9UrM.8Vk6BUZHqjrTU76hLUzvD65TW
+    # email : kit@gmail.com
+    # password : 123456
     # 原生mysql語法
     sql = """
     select email,password,nickname,uid from account
