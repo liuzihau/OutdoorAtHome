@@ -1,4 +1,3 @@
-# Playground
 You need to download some weight file to run this project
 ```
 https://drive.google.com/file/d/1O14nbbJeQUHxDTA1HFWtvL3q4f-JftwA/view?usp=sharing
